@@ -1,9 +1,12 @@
 {
   "name": "goit-node-rest-api",
   "type": "module",
+  "homepage": "https://pavel-pasechnik.github.io/task-pro-backend/",
   "scripts": {
     "start": "node -r dotenv/config ./app.js",
-    "dev": "nodemon -r dotenv/config ./app.js"
+    "dev": "nodemon -r dotenv/config ./app.js",
+    "build": "react-scripts build",
+    "lint:js": "eslint src/**/*.{js,jsx}"
   },
   "dependencies": {
     "@sendgrid/mail": "^8.1.3",
