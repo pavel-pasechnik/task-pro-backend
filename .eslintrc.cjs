@@ -7,7 +7,6 @@ module.exports = {
     'plugin:jsx-a11y/recommended',
     'plugin:sonarjs/recommended',
     'plugin:prettier/recommended',
-    'stylelint',
     'prettier',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
