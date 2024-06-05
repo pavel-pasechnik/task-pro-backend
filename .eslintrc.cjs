@@ -3,13 +3,7 @@ module.exports = {
   env: { node: true, browser: true, es2024: true },
   extends: [
     'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
     'plugin:import/recommended',
-    'plugin:import/typescript',
-    'plugin:react/recommended',
-    'plugin:react/jsx-runtime',
-    'plugin:react-hooks/recommended',
-    'plugin:react-redux/recommended',
     'plugin:jsx-a11y/recommended',
     'plugin:sonarjs/recommended',
     'plugin:prettier/recommended',
@@ -18,7 +12,7 @@ module.exports = {
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parserOptions: {
-    parser: ['@babel/eslint-parser', '@typescript-eslint/parser'],
+    parser: ['@babel/eslint-parser'],
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
@@ -27,14 +21,10 @@ module.exports = {
     'import/resolver': { typescript: true, node: true },
     'import/extensions': ['.js', '.jsx'],
     'import/ignore': ['.scss', '.less', '.css'],
-    'import/parsers': { '@typescript-eslint/parser': ['.ts', '.tsx'] },
   },
-  plugins: ['@typescript-eslint', 'react-refresh', 'jsx-a11y', 'react-redux', 'sonarjs'],
+  plugins: ['jsx-a11y', 'sonarjs'],
   rules: {
     'no-console': 0,
-    'react/prop-types': 0,
-    'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-    'react/jsx-filename-extension': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',
     'sort-imports': [
       'error',
@@ -44,7 +34,6 @@ module.exports = {
       },
     ],
     'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': ['error'],
     'import/order': [
       'error',
       {
