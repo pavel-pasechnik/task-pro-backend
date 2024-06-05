@@ -17,7 +17,7 @@ module.exports = {
   },
   settings: {
     react: { version: '18.2' },
-    'import/resolver': { typescript: true, node: true },
+    'import/resolver': { node: true },
     'import/extensions': ['.js', '.jsx'],
     'import/ignore': ['.scss', '.less', '.css'],
   },

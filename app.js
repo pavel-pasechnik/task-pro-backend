@@ -1,11 +1,12 @@
-import express from 'express';
-import morgan from 'morgan';
-import cors from 'cors';
 import path from 'node:path';
 
-import connect from './server.js';
+import cors from 'cors';
+import express from 'express';
+import morgan from 'morgan';
+
 import contactsRouter from './routes/contactsRouter.js';
 import usersRouter from './routes/usersRouter.js';
+import connect from './server.js';
 
 const PORT = process.env.PORT;
 const app = express();
