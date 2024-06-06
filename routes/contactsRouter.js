@@ -1,18 +1,20 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import express from 'express';
+
 import {
+  createContact,
+  deleteContact,
   getAllContacts,
   getOneContact,
-  deleteContact,
-  createContact,
   updateContact,
 } from '../controllers/contactsControllers.js';
 import validateBody from '../helpers/validateBody.js';
+import authMiddleware from '../middleware/auth.js';
 import {
   createContactSchema,
   updateContactSchema,
   updateStatusContactSchema,
 } from '../schemas/contactsSchemas.js';
-import authMiddleware from '../middleware/auth.js';
 
 const contactsRouter = express.Router();
 
