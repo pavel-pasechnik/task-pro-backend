@@ -1,13 +1,14 @@
-import { v4 as uuId } from 'uuid';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import HttpError from '../helpers/HttpError.js';
-import gravatar from 'gravatar';
 import * as fs from 'node:fs/promises';
 import path from 'node:path';
-import Jimp from 'jimp';
-import sendMail from '../helpers/mail.js';
 
+import bcrypt from 'bcrypt';
+import gravatar from 'gravatar';
+import Jimp from 'jimp';
+import jwt from 'jsonwebtoken';
+import { v4 as uuId } from 'uuid';
+
+import HttpError from '../helpers/HttpError.js';
+import sendMail from '../helpers/mail.js';
 import User from '../models/user.js';
 
 export const createUser = async (req, res, next) => {
