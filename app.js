@@ -8,7 +8,6 @@ import swaggerUi from 'swagger-ui-express';
 
 import baardRouter from './routes/baardRouter.js';
 import columnRouter from './routes/columnRouter.js';
-import contactsRouter from './routes/contactsRouter.js';
 import usersRouter from './routes/usersRouter.js';
 import connect from './server.js';
 
@@ -51,8 +50,6 @@ const options = {
 
 const swaggerSpec = swaggerJSDoc(options);
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
 app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json());
@@ -60,8 +57,8 @@ app.use(express.json());
 app.use('/avatars', express.static(path.resolve('public', 'avatars')));
 app.use('/api/baard', baardRouter);
 app.use('/api/column', columnRouter);
-app.use('/api/contacts', contactsRouter);
 app.use('/api/users', usersRouter);
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use((_, res) => {
   res.status(404).json({ message: 'Route not found' });
