@@ -10,6 +10,6 @@ export const addBaardService = async ({ title, icon, background }, owner) =>
   });
 
 export const updateBaardService = async (data, body) =>
-  Baard.findByIdAndUpdate(data, body, { new: true });
+  await Baard.findByIdAndUpdate(data, body, { new: true });
 
-export const deleteBaardService = data => Baard.findOneAndDelete(data);
+export const deleteBaardService = data => Baard.findByIdAndDelete(data);
