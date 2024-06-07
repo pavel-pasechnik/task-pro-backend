@@ -1,8 +1,8 @@
-import * as fs from 'node:fs/promises';
+// TODO import * as fs from 'node:fs/promises';
 import path from 'node:path';
 
 import bcrypt from 'bcrypt';
-import gravatar from 'gravatar';
+// TODO import gravatar from 'gravatar';
 import Jimp from 'jimp';
 import jwt from 'jsonwebtoken';
 import { v4 as uuId } from 'uuid';
@@ -13,29 +13,26 @@ import User from '../models/user.js';
 
 export const createUser = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
     const user = await User.findOne({ email });
 
     if (user !== null) throw HttpError(409, 'Email in use');
 
     const passwordHash = await bcrypt.hash(password, 10);
-    const verifyToken = uuId();
 
-    const avatarUrl = gravatar.url(email, { protocol: 'http', size: '250' });
+    const avatarUrl = ''; // TODO gravatar.url(email, { protocol: 'http', size: '250' })
 
     const addUser = await User.create({
+      name,
       email,
       password: passwordHash,
       avatarURL: avatarUrl,
-      verificationToken: verifyToken,
     });
-
-    await sendMail(email, verifyToken);
 
     res.status(201).json({
       user: {
+        name: addUser.name,
         email: addUser.email,
-        subscription: addUser.subscription,
       },
     });
   } catch (error) {
@@ -54,16 +51,15 @@ export const loginUser = async (req, res, next) => {
 
     if (!isMatch) throw HttpError(401, 'Email or password is wrong');
 
-    if (!user.verify) res.status(401).send({ message: 'Please verify your email' });
-
     const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET);
     const addUserToken = await User.findByIdAndUpdate(user._id, { token }, { new: true });
 
     res.status(200).json({
       token: addUserToken.token,
       user: {
-        email: addUserToken.email,
-        subscription: addUserToken.subscription,
+        avatarURL: addUserToken.avatarURL,
+        name: addUserToken.name,
+        theme: addUserToken.theme,
       },
     });
   } catch (error) {
@@ -83,40 +79,41 @@ export const logoutUser = async (req, res, next) => {
 export const currentUser = async (req, res, next) => {
   try {
     res.status(200).json({
-      email: req.user.email,
-      subscription: req.user.subscription,
       avatarURL: req.user.avatarURL,
+      email: req.user.email,
+      name: req.user.name,
+      theme: req.user.theme,
     });
   } catch (error) {
     next(error);
   }
 };
 
-export const subscriptionUpdate = async (req, res, next) => {
-  try {
-    const updatedUser = await User.findByIdAndUpdate(req.user._id, req.body, {
-      new: true,
-    });
+// export const subscriptionUpdate = async (req, res, next) => {
+//   try {
+//     const updatedUser = await User.findByIdAndUpdate(req.user._id, req.body, {
+//       new: true,
+//     });
 
-    res.status(200).json({
-      email: updatedUser.email,
-      subscription: updatedUser.subscription,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+//     res.status(200).json({
+//       email: updatedUser.email,
+//       subscription: updatedUser.subscription,
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 export const updateAvatar = async (req, res, next) => {
   try {
     const extname = path.extname(req.file.path);
     const basename = path.basename(req.file.path, extname);
-    const newAvatarName = `${basename}-250x250${extname}`;
+    const newAvatarName = `${basename}-68x68${extname}`;
     const avatarResize = await Jimp.read(req.file.path);
 
-    await avatarResize.resize(256, 256).writeAsync(req.file.path);
+    await avatarResize.resize(68, 68).writeAsync(req.file.path);
 
-    await fs.rename(req.file.path, path.resolve('public', 'avatars', newAvatarName));
+    // TODO await fs.rename(req.file.path, path.resolve('public', 'avatars', newAvatarName));
 
     const avatarURL = `/avatars/${newAvatarName}`;
 
@@ -134,42 +131,48 @@ export const updateAvatar = async (req, res, next) => {
   }
 };
 
-export const verifyUser = async (req, res, next) => {
+export const updateTheme = async (req, res, next) => {
   try {
-    const { verificationToken } = req.params;
+    const theme = req.user.theme;
 
-    const user = await User.findOneAndUpdate(
-      { verificationToken },
-      { verify: true, verificationToken: null },
-      { new: true }
-    );
+    const user = await User.findByIdAndUpdate(req.user._id, req.body, {
+      new: true,
+    });
 
-    if (!user) throw HttpError(404, 'User not found');
-
-    res.status(200).json({ message: 'Verification successful' });
+    res.status(200).json({ theme: user.theme });
   } catch (error) {
     next(error);
   }
 };
-
-export const verifyCheck = async (req, res, next) => {
+//TODO Update user!
+export const updateUser = async (req, res, next) => {
   try {
-    const { email } = req.body;
-    const verifyToken = uuId();
+    const { email, name, password } = req.body;
+    const user = await User.findOne({ email });
 
-    const user = await User.findOneAndUpdate(
-      { email, verify: false },
-      { verificationToken: verifyToken },
-      { new: true }
+    if (user !== null) throw HttpError(409, 'Email in use');
+
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        email,
+        name,
+        password: passwordHash,
+      },
+      {
+        new: true,
+      }
     );
 
-    if (!user) {
-      throw HttpError(400, 'Verification has already been passed');
-    }
-
-    await sendMail(email, verifyToken);
-
-    res.status(200).json({ message: 'Verification email sent' });
+    res.status(200).json({
+      user: {
+        avatarURL: updatedUser.avatarURL,
+        email: updatedUser.email,
+        name: updatedUser.name,
+      },
+    });
   } catch (error) {
     next(error);
   }
