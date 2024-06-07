@@ -14,13 +14,9 @@ export const createBaard = asyncHandler(async (req, res, next) => {
   res.status(200).json(baard);
 });
 
-export const updateBaard = asyncHandler(async (req, res, next) => {
+export const updateBaard = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { _id: owner } = req.user;
-
-  if (Object.keys(req.body).length === 0) {
-    return res.status(400).json({ error: 'Body must have at least one field' });
-  }
 
   const result = await updateBaardService({ _id: id, owner }, req.body);
 
