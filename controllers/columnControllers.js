@@ -8,10 +8,10 @@ import {
 } from '../service/columnService.js';
 
 export const createColumn = asyncHandler(async (req, res, next) => {
-  const { title } = req.body;
   const { id: baardId } = req.params;
+  const { title } = req.body;
 
-  const column = await createColumnService({ title, baardId });
+  const column = await createColumnService({ baardId, title });
   if (!column) throw new HttpError(404, 'frong id');
 
   res.status(200).json(column);
@@ -29,9 +29,8 @@ export const updateColumn = asyncHandler(async (req, res, next) => {
 
 export const deleteColumn = asyncHandler(async (req, res) => {
   const { id: baardId } = req.params;
-  const { _id: owner } = req.user;
 
-  const result = await deleteColumnService({ _id: baardId, owner });
+  const result = await deleteColumnService({ _id: baardId });
 
   if (!result) throw new HttpError(404);
 
