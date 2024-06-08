@@ -28,4 +28,4 @@ const baaardSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model('Baard', baaardSchema);
+export default mongoose.model('Board', baaardSchema);
