@@ -111,7 +111,7 @@ boardRouter.post('/columns/:id', validateBody(createColumnSchema), createColumn)
  *               title:
  *                 type: string
  *                 description: The title of the column.
- *                 example: My New Column
+ *                 example:  New Column
  *     responses:
  *       200:
  *         description: Column created successfully.
@@ -127,7 +127,7 @@ boardRouter.post('/columns/:id', validateBody(createColumnSchema), createColumn)
  *                 title:
  *                   type: string
  *                   description: The title of the column.
- *                   example: My New Column
+ *                   example: New Column
  *
  *       400:
  *         description: Bad request. Invalid input data.
