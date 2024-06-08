@@ -1,7 +1,6 @@
 import asyncHandler from 'express-async-handler';
 
 import HttpError from '../helpers/HttpError.js';
-// import Baard from '../model/baard.js';
 import {
   createBaardService,
   deleteBaardService,

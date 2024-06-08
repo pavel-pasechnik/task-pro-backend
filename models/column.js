@@ -9,12 +9,8 @@ const columnSchema = new mongoose.Schema(
     },
     owner: {
       type: Schema.Types.ObjectId,
-      ref: 'Baard',
+      ref: 'Board',
       required: true,
-    },
-    createAt: {
-      type: Date,
-      default: Date.now,
     },
   },
   {
