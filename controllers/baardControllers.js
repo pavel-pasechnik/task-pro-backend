@@ -3,13 +3,13 @@ import asyncHandler from 'express-async-handler';
 import HttpError from '../helpers/HttpError.js';
 // import Baard from '../model/baard.js';
 import {
-  addBaardService,
+  createBaardService,
   deleteBaardService,
   updateBaardService,
 } from '../service/baardService.js';
 
 export const createBaard = asyncHandler(async (req, res, next) => {
-  const baard = await addBaardService(req.body, req.user);
+  const baard = await createBaardService(req.body, req.user);
 
   res.status(200).json(baard);
 });

@@ -8,6 +8,7 @@ import swaggerUi from 'swagger-ui-express';
 
 import baardRouter from './routes/baardRouter.js';
 import columnRouter from './routes/columnRouter.js';
+
 import usersRouter from './routes/usersRouter.js';
 import connect from './server.js';
 
@@ -55,8 +56,10 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/avatars', express.static(path.resolve('public', 'avatars')));
+
 app.use('/api/baard', baardRouter);
 app.use('/api/column', columnRouter);
+
 app.use('/api/users', usersRouter);
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
