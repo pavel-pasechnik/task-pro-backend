@@ -22,7 +22,7 @@ export const updateColumn = asyncHandler(async (req, res, next) => {
 
   const result = await updateColumnService({ _id: baardId }, req.body);
 
-  if (!result) throw new HttpError(404);
+  if (!result) throw new HttpError(404, 'Column not found');
 
   res.status(200).json(result);
 });
@@ -32,7 +32,7 @@ export const deleteColumn = asyncHandler(async (req, res) => {
 
   const result = await deleteColumnService({ _id: baardId });
 
-  if (!result) throw new HttpError(404);
+  if (!result) throw new HttpError(404, 'Column not found');
 
   res.status(200).json(result);
 });
