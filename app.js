@@ -8,7 +8,6 @@ import swaggerUi from 'swagger-ui-express';
 
 import baardRouter from './routes/baardRouter.js';
 import columnRouter from './routes/columnRouter.js';
-
 import usersRouter from './routes/usersRouter.js';
 import connect from './server.js';
 
