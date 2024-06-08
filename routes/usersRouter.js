@@ -22,22 +22,6 @@ const usersRouter = express.Router();
  *       type: http
  *       scheme: bearer
  *       bearerFormat: JWT
- *   schemas:
- *     User:
- *       type: object
- *       properties:
- *         name:
- *           type: string
- *           description: The user's name.
- *           example: Leanne Graham
- *         email:
- *           type: string
- *           description: The user's email.
- *           example: leanne@example.com
- *         avatarURL:
- *           type: string
- *           description: The user's avatar URL.
- *           example: http://avatar/Leanne-Graham.jpeg
  */
 
 /**
@@ -62,7 +46,27 @@ const usersRouter = express.Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *                type: object
+ *                properties:
+ *                  user:
+ *                    type: object
+ *                    properties:
+ *                      name:
+ *                        type: string
+ *                        description: The user's name.
+ *                        example: Leanne Graham
+ *                      email:
+ *                        type: string
+ *                        description: The user's email.
+ *                        example: leanne@example.com
+ *                      avatarURL:
+ *                        type: string
+ *                        description: The user's avatar url.
+ *                        example: http://avatar/Leanne-Graham.jpeg
+ *                      theme:
+ *                        type: string
+ *                        description: The user's theme.
+ *                        example: Light
  *       401:
  *         description: Unauthorized, token is missing or invalid.
  *       500:
@@ -96,18 +100,40 @@ usersRouter.get('/current', authMiddleware, currentUser);
  *               password:
  *                 type: string
  *                 description: User's password.
- *                 example: mypassword
+ *                 example: password
  *     responses:
  *       201:
  *         description: User registered successfully.
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *                type: object
+ *                properties:
+ *                  user:
+ *                    type: object
+ *                    properties:
+ *                      name:
+ *                        type: string
+ *                        description: The user's name.
+ *                        example: Leanne Graham
+ *                      email:
+ *                        type: string
+ *                        description: The user's email.
+ *                        example: leanne@example.com
  *       400:
  *         description: Invalid input.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: The error message.
+ *                   example: Помилка від Joi або іншої бібліотеки валідації
  *       409:
- *         description: Email already in use.
+ *         description: Email in use.
+ *         "content": {}
  */
 
 usersRouter.post('/register', validateBody(createUserSchema), createUser);
@@ -133,7 +159,7 @@ usersRouter.post('/register', validateBody(createUserSchema), createUser);
  *               password:
  *                 type: string
  *                 description: User's password.
- *                 example: mypassword
+ *                 example: password
  *     responses:
  *       200:
  *         description: User authenticated successfully.
@@ -147,7 +173,17 @@ usersRouter.post('/register', validateBody(createUserSchema), createUser);
  *                   description: Authentication token.
  *                   example: jwt.token.here
  *                 user:
- *                   $ref: '#/components/schemas/User'
+ *                   type: object
+ *                   description: User data.
+ *                   properties:
+ *                     avatarURL:
+ *                       type: string
+ *                       description: The user's avatar url.
+ *                       example: http://avatar/Leanne-Graham.jpeg
+ *                     theme:
+ *                       type: string
+ *                       description: The user's theme.
+ *                       example: Light
  *       401:
  *         description: Unauthorized, email or password is incorrect.
  */
@@ -160,6 +196,14 @@ usersRouter.post('/login', validateBody(loginUserSchema), loginUser);
  *   post:
  *     summary: Logout a Task Pro user.
  *     description: Logout from the current user session.
+ *     parameters:
+ *     - in: header
+ *       name: Authorization
+ *       required: true
+ *       description: Bearer token for authorization.
+ *       schema:
+ *         type: string
+ *         example: Bearer <token>
  *     security:
  *     - bearerAuth: []
  *     responses:

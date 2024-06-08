@@ -79,9 +79,9 @@ export const logoutUser = async (req, res, next) => {
 export const currentUser = async (req, res, next) => {
   try {
     res.status(200).json({
-      avatarURL: req.user.avatarURL,
-      email: req.user.email,
       name: req.user.name,
+      email: req.user.email,
+      avatarURL: req.user.avatarURL,
       theme: req.user.theme,
     });
   } catch (error) {
