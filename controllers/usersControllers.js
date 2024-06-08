@@ -111,7 +111,7 @@ export const updateAvatar = async (req, res, next) => {
     const newAvatarName = `${basename}-68x68${extname}`;
     const avatarResize = await Jimp.read(req.file.path);
 
-    await avatarResize.resize(68, 68).writeAsync(req.file.path);
+    const resize = await avatarResize.resize(68, 68).writeAsync(req.file.path);
 
     // TODO await fs.rename(req.file.path, path.resolve('public', 'avatars', newAvatarName));
 
@@ -124,6 +124,8 @@ export const updateAvatar = async (req, res, next) => {
         new: true,
       }
     );
+
+    console.log(user);
 
     res.status(200).json({ avatarURL: user.avatarURL });
   } catch (error) {

@@ -69,8 +69,15 @@ const usersRouter = express.Router();
  *                        example: Light
  *       401:
  *         description: Unauthorized, token is missing or invalid.
- *       500:
- *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: The error message.
+ *                   example: Not authorized
  */
 
 usersRouter.get('/current', authMiddleware, currentUser);
@@ -133,7 +140,15 @@ usersRouter.get('/current', authMiddleware, currentUser);
  *                   example: Помилка від Joi або іншої бібліотеки валідації
  *       409:
  *         description: Email in use.
- *         "content": {}
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: The error message.
+ *                   example: Email in use
  */
 
 usersRouter.post('/register', validateBody(createUserSchema), createUser);
@@ -186,6 +201,15 @@ usersRouter.post('/register', validateBody(createUserSchema), createUser);
  *                       example: Light
  *       401:
  *         description: Unauthorized, email or password is incorrect.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: The error message.
+ *                   example: Email or password is wrong
  */
 
 usersRouter.post('/login', validateBody(loginUserSchema), loginUser);
@@ -208,9 +232,18 @@ usersRouter.post('/login', validateBody(loginUserSchema), loginUser);
  *     - bearerAuth: []
  *     responses:
  *       204:
- *         description: User logged out successfully.
+ *         description: No Content. User logged out successfully.
  *       401:
  *         description: Unauthorized, token is missing or invalid.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: The error message.
+ *                   example: Not authorized
  */
 
 usersRouter.post('/logout', authMiddleware, logoutUser);
