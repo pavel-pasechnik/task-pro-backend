@@ -7,11 +7,17 @@ import {
   logoutUser,
   updateAvatar,
   updateTheme,
+  updateUser,
 } from '../controllers/usersControllers.js';
 import validateBody from '../helpers/validateBody.js';
 import authMiddleware from '../middleware/auth.js';
 import uploadMiddleware from '../middleware/upload.js';
-import { createUserSchema, loginUserSchema, updateThemeSchema } from '../schemas/usersSchemas.js';
+import {
+  createUserSchema,
+  loginUserSchema,
+  updateThemeSchema,
+  updateUserSchema,
+} from '../schemas/usersSchemas.js';
 
 const usersRouter = express.Router();
 
@@ -202,18 +208,39 @@ usersRouter.post('/login', validateBody(loginUserSchema), loginUser);
 
 /**
  * @swagger
- * /api/users/logout:
- *   post:
- *     summary: Logout a Task Pro user.
+ * /api/users:
+ *   patch:
+ *     summary: Update a Task Pro user.
  *     tags: [Protected Routes]
- *     description: Logout from the current user session.
+ *     description: Update current user.
  *     security:
  *     - bearerAuth: []
  *     responses:
- *       204:
- *         description: No Content. User logged out successfully.
+ *       200:
+ *         description: User update successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: Authentication token.
+ *                   example: jwt.token.here
+ *                 user:
+ *                   type: object
+ *                   description: User data.
+ *                   properties:
+ *                     avatarURL:
+ *                       type: string
+ *                       description: The user's avatar url.
+ *                       example: http://avatar/Leanne-Graham.jpeg
+ *                     theme:
+ *                       type: string
+ *                       description: The user's theme.
+ *                       example: Light
  *       401:
- *         description: Unauthorized, token is missing or invalid.
+ *         description: Unauthorized, email or password is incorrect.
  *         content:
  *           application/json:
  *             schema:
@@ -222,10 +249,10 @@ usersRouter.post('/login', validateBody(loginUserSchema), loginUser);
  *                 message:
  *                   type: string
  *                   description: The error message.
- *                   example: Not authorized
+ *                   example: Email or password is wrong
  */
 
-usersRouter.post('/logout', authMiddleware, logoutUser);
+usersRouter.patch('/', authMiddleware, validateBody(updateUserSchema), updateUser);
 
 /**
  * @swagger
@@ -342,5 +369,32 @@ usersRouter.patch('/avatars', authMiddleware, uploadMiddleware.single('avatar'),
  */
 
 usersRouter.patch('/themes', authMiddleware, validateBody(updateThemeSchema), updateTheme);
+
+/**
+ * @swagger
+ * /api/users/logout:
+ *   post:
+ *     summary: Logout a Task Pro user.
+ *     tags: [Protected Routes]
+ *     description: Logout from the current user session.
+ *     security:
+ *     - bearerAuth: []
+ *     responses:
+ *       204:
+ *         description: No Content. User logged out successfully.
+ *       401:
+ *         description: Unauthorized, token is missing or invalid.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: The error message.
+ *                   example: Not authorized
+ */
+
+usersRouter.post('/logout', authMiddleware, logoutUser);
 
 export default usersRouter;
