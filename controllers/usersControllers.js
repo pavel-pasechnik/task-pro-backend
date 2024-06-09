@@ -5,10 +5,11 @@ import bcrypt from 'bcrypt';
 // TODO import gravatar from 'gravatar';
 import Jimp from 'jimp';
 import jwt from 'jsonwebtoken';
-import { v4 as uuId } from 'uuid';
+import mime from 'mime-types';
+// TODO import { v4 as uuId } from 'uuid';
 
 import HttpError from '../helpers/HttpError.js';
-import sendMail from '../helpers/mail.js';
+// TODO import sendMail from '../helpers/mail.js';
 import User from '../models/user.js';
 
 export const createUser = async (req, res, next) => {
@@ -20,13 +21,10 @@ export const createUser = async (req, res, next) => {
 
     const passwordHash = await bcrypt.hash(password, 10);
 
-    const avatarUrl = ''; // TODO gravatar.url(email, { protocol: 'http', size: '250' })
-
     const addUser = await User.create({
       name,
       email,
       password: passwordHash,
-      avatarURL: avatarUrl,
     });
 
     res.status(201).json({
@@ -106,12 +104,16 @@ export const currentUser = async (req, res, next) => {
 
 export const updateAvatar = async (req, res, next) => {
   try {
+    const mimeType = mime.lookup(req.file.path);
+    if (!mimeType || !mimeType.startsWith('image/')) {
+      throw HttpError(400, 'Invalid file type');
+    }
     const extname = path.extname(req.file.path);
     const basename = path.basename(req.file.path, extname);
     const newAvatarName = `${basename}-68x68${extname}`;
     const avatarResize = await Jimp.read(req.file.path);
 
-    const resize = await avatarResize.resize(68, 68).writeAsync(req.file.path);
+    await avatarResize.resize(68, 68).writeAsync(req.file.path);
 
     // TODO await fs.rename(req.file.path, path.resolve('public', 'avatars', newAvatarName));
 
@@ -125,8 +127,6 @@ export const updateAvatar = async (req, res, next) => {
       }
     );
 
-    console.log(user);
-
     res.status(200).json({ avatarURL: user.avatarURL });
   } catch (error) {
     next(error);
@@ -135,8 +135,6 @@ export const updateAvatar = async (req, res, next) => {
 
 export const updateTheme = async (req, res, next) => {
   try {
-    const theme = req.user.theme;
-
     const user = await User.findByIdAndUpdate(req.user._id, req.body, {
       new: true,
     });
