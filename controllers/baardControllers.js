@@ -19,7 +19,7 @@ export const updateBaard = asyncHandler(async (req, res) => {
 
   const result = await updateBaardService({ _id: id, owner }, req.body);
 
-  if (!result) throw new HttpError(404);
+  if (!result) throw new HttpError(404, 'Board not found');
 
   res.status(200).json(result);
 });
@@ -30,7 +30,7 @@ export const deleteBaard = asyncHandler(async (req, res) => {
 
   const result = await deleteBaardService({ _id: id, owner });
 
-  if (!result) throw new HttpError(404);
+  if (!result) throw new HttpError(404, 'Board not found');
 
   res.status(200).json(result);
 });

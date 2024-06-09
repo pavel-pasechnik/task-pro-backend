@@ -15,7 +15,7 @@ export const updateCard = asyncHandler(async (req, res, next) => {
   const { id: columnID } = req.params;
 
   const result = await updateCardService({ _id: columnID }, req.body);
-  if (!result) throw new HttpError(404);
+  if (!result) throw new HttpError(404, 'Card not found');
   res.status(200).json(result);
 });
 
@@ -24,7 +24,7 @@ export const deleteCard = asyncHandler(async (req, res, next) => {
 
   const result = await deleteCardService({ _id: columnID });
 
-  if (!result) throw new HttpError(404);
+  if (!result) throw new HttpError(404, 'Card not found');
 
   res.status(200).json(result);
 });
