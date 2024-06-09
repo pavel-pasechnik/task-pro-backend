@@ -2,7 +2,10 @@ import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema(
   {
-    avatarURL: { type: String },
+    avatarURL: {
+      type: String,
+      default: null,
+    },
     email: {
       type: String,
       required: [true, 'Email is required'],

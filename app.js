@@ -40,6 +40,25 @@ const swaggerDefinition = {
       description: 'Development server',
     },
   ],
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+    },
+  },
+  tags: [
+    {
+      name: 'Public Routes',
+      description: 'Open routes accessible without authentication',
+    },
+    {
+      name: 'Protected Routes',
+      description: 'Secure routes requiring a Bearer token',
+    },
+  ],
 };
 
 const options = {

@@ -26,3 +26,9 @@ export const loginUserSchema = Joi.object({
 }).error(errors => {
   return new Error(message);
 });
+
+export const updateThemeSchema = Joi.object({
+  theme: Joi.string().trim().min(1).required(),
+}).error(errors => {
+  return new Error(message);
+});
