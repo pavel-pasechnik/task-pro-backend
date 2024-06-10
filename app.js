@@ -7,6 +7,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
 import boardRouter from './routes/baardRouter.js';
+import feedbackRouter from './routes/feedBack.js';
 import usersRouter from './routes/usersRouter.js';
 import connect from './server.js';
 
@@ -75,7 +76,7 @@ app.use(express.json());
 app.use('/avatars', express.static(path.resolve('public', 'avatars')));
 
 app.use('/api/board', boardRouter);
-
+app.use('/api/feedback', feedbackRouter);
 app.use('/api/users', usersRouter);
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

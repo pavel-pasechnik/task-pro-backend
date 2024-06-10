@@ -352,10 +352,7 @@ boardRouter.put('/columns/:id', validateBody(updateColumnSchema), updateColumn);
  *                   type: string
  *                   description: The title of the column.
  *                   example: Updated Column Title
- *                 owner:
- *                   type: string
- *                   description: The ID of the board to which the column belongs.
- *                   example: 60d0fe4f5311236168a109ca
+ *
  *       400:
  *         description: Bad request. Invalid input data.
  *         content:
