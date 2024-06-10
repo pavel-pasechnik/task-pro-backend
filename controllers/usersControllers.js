@@ -1,15 +1,9 @@
-// TODO import * as fs from 'node:fs/promises';
-import path from 'node:path';
-
 import bcrypt from 'bcrypt';
-// TODO import gravatar from 'gravatar';
-import Jimp from 'jimp';
 import jwt from 'jsonwebtoken';
 import mime from 'mime-types';
-// TODO import { v4 as uuId } from 'uuid';
 
 import HttpError from '../helpers/HttpError.js';
-// TODO import sendMail from '../helpers/mail.js';
+import { cloudinaryMiddleware } from '../middleware/cloudinary.js';
 import User from '../models/user.js';
 
 export const createUser = async (req, res, next) => {
@@ -49,7 +43,7 @@ export const loginUser = async (req, res, next) => {
 
     if (!isMatch) throw HttpError(401, 'Email or password is wrong');
 
-    const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
     const addUserToken = await User.findByIdAndUpdate(user._id, { token }, { new: true });
 
     res.status(200).json({
@@ -87,41 +81,19 @@ export const currentUser = async (req, res, next) => {
   }
 };
 
-// export const subscriptionUpdate = async (req, res, next) => {
-//   try {
-//     const updatedUser = await User.findByIdAndUpdate(req.user._id, req.body, {
-//       new: true,
-//     });
-
-//     res.status(200).json({
-//       email: updatedUser.email,
-//       subscription: updatedUser.subscription,
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
 export const updateAvatar = async (req, res, next) => {
   try {
     const mimeType = mime.lookup(req.file.path);
-    if (!mimeType || !mimeType.startsWith('image/')) {
-      throw HttpError(400, 'Invalid file type');
-    }
-    const extname = path.extname(req.file.path);
-    const basename = path.basename(req.file.path, extname);
-    const newAvatarName = `${basename}-68x68${extname}`;
-    const avatarResize = await Jimp.read(req.file.path);
+    if (!mimeType?.startsWith('image/')) throw HttpError(400, 'Invalid file type');
 
-    await avatarResize.resize(68, 68).writeAsync(req.file.path);
+    const { id, avatarURL } = req.user;
+    const filePath = req.file.path;
 
-    // TODO await fs.rename(req.file.path, path.resolve('public', 'avatars', newAvatarName));
-
-    const avatarURL = `/avatars/${newAvatarName}`;
+    const { imageUrl } = await cloudinaryMiddleware(id, filePath, avatarURL);
 
     const user = await User.findByIdAndUpdate(
       req.user._id,
-      { avatarURL: avatarURL },
+      { avatarURL: imageUrl },
       {
         new: true,
       }
@@ -144,15 +116,22 @@ export const updateTheme = async (req, res, next) => {
     next(error);
   }
 };
-//TODO Update user!
+
 export const updateUser = async (req, res, next) => {
   try {
-    const { email, name, password } = req.body;
-    const user = await User.findOne({ email });
+    const value = req.body;
+    let passwordHash = null;
+    const user = await User.findOne(req.body._id);
 
-    if (user !== null) throw HttpError(409, 'Email in use');
+    if (req.body.email == user.email) throw HttpError(409, 'Email in use');
 
-    const passwordHash = await bcrypt.hash(password, 10);
+    if (req.body.password) {
+      passwordHash = await bcrypt.hash(req.body.password, 10);
+    } else {
+      passwordHash = user.password;
+    }
+
+    const { email = user.email, name = user.name } = value;
 
     const updatedUser = await User.findByIdAndUpdate(
       req.user._id,
