@@ -1,8 +1,8 @@
 // import { cloudinaryService } from './cloudinaryService.js';
-import Baard from '../models/baard.js';
+import Board from '../models/board.js';
 
 export const createBaardService = async ({ title, icon, background }, owner) =>
-  Baard.create({
+  Board.create({
     title,
     icon,
     background,
@@ -10,6 +10,6 @@ export const createBaardService = async ({ title, icon, background }, owner) =>
   });
 
 export const updateBaardService = async (data, body) =>
-  Baard.findByIdAndUpdate(data, body, { new: true });
+  Board.findByIdAndUpdate(data, body, { new: true });
 
-export const deleteBaardService = data => Baard.findByIdAndDelete(data);
+export const deleteBaardService = data => Board.findByIdAndDelete(data);
