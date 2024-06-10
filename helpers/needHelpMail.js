@@ -15,7 +15,14 @@ export const sendHelpEmail = async (userEmail, userComment) => {
     from: process.env.MAILTRAP_USERNAME,
     to: 'taskpro.project@gmail.com',
     subject: 'Help Request',
-    text: `User Comment: ${userComment} User Email: ${userEmail}`,
+    html: `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+        <h2 style="color: #333;">Help Request</h2>
+        <p><strong>User Email:</strong> ${userEmail}</p>
+        <p><strong>User Comment:</strong></p>
+        <p style="background: #f9f9f9; padding: 10px; border-radius: 5px;">${userComment}</p>
+      </div>
+    `,
   };
 
   try {
