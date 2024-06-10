@@ -15,7 +15,7 @@ const sendHelpEmail = async (userEmail, userComment) => {
         <p style="background: #f9f9f9; padding: 10px; border-radius: 5px;">${userComment}</p>
       </div>
     `,
-    text: `User Email: ${userEmail}\nUser Comment: ${userComment}`,
+    text: `User Email: ${userEmail} User Comment: ${userComment}`,
   };
 
   return await sgMail.send(emailData);
