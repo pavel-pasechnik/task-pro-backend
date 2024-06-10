@@ -24,6 +24,7 @@ boardRouter.post('/', validateBody(createBaardSchema), createBaard);
  * /api/board/:
  *   post:
  *     summary: Create a new board.
+ *     tags: [Public Routes]
  *     description: Create a new board in Task Pro.
  *     security:
  *       - bearerAuth: []
@@ -90,6 +91,7 @@ boardRouter.post('/columns/:id', validateBody(createColumnSchema), createColumn)
  * /api/board/columns/{id}:
  *   post:
  *     summary: Create a new column.
+ *     tags: [Public Routes]
  *     description: Create a new column in a specific board in Task Pro.
  *     security:
  *       - bearerAuth: []
@@ -148,6 +150,7 @@ boardRouter.post('/cards/:id', validateBody(createCardSchema), createCard);
  * /api/board/cards/{id}:
  *   post:
  *     summary: Create a new card.
+ *     tags: [Public Routes]
  *     description: Create a new card in a specific column in Task Pro.
  *     security:
  *       - bearerAuth: []
@@ -230,6 +233,7 @@ boardRouter.put('/:id', validateBody(updateBaardSchema), updateBaard);
  * /api/board/{id}:
  *   put:
  *     summary: Update a board.
+ *     tags: [Public Routes]
  *     description: Update the details of an existing board in Task Pro.
  *     security:
  *       - bearerAuth: []
@@ -314,6 +318,7 @@ boardRouter.put('/columns/:id', validateBody(updateColumnSchema), updateColumn);
  * /api/board/columns/{id}:
  *   put:
  *     summary: Update a column.
+ *     tags: [Public Routes]
  *     description: Update the details of an existing column in Task Pro.
  *     security:
  *       - bearerAuth: []
@@ -382,6 +387,7 @@ boardRouter.put('/cards/:id', validateBody(updateCardSchema), updateCard);
  * /api/board/cards/{id}:
  *   put:
  *     summary: Update a card.
+ *     tags: [Public Routes]
  *     description: Update the details of an existing card in Task Pro.
  *     security:
  *       - bearerAuth: []
@@ -478,6 +484,7 @@ boardRouter.delete('/:id', cascadeDeleteColumnsAndCards, deleteBaard);
  * /api/board/{id}:
  *   delete:
  *     summary: Delete a board and related columns and cards.
+ *     tags: [Public Routes]
  *     description: Delete an existing board along with all its related columns and cards in Task Pro.
  *     security:
  *       - bearerAuth: []
@@ -541,6 +548,7 @@ boardRouter.delete('/columns/:id', cascadeDeleteCards, deleteColumn);
  * /api/board/columns/{id}:
  *   delete:
  *     summary: Delete a column and related cards.
+ *     tags: [Public Routes]
  *     description: Delete an existing column along with all its related cards in Task Pro.
  *     security:
  *       - bearerAuth: []
@@ -597,6 +605,7 @@ boardRouter.delete('/cards/:id', deleteCard);
  * /api/board/cards/{id}:
  *   delete:
  *     summary: Delete a card.
+ *     tags: [Public Routes]
  *     description: Delete an existing card in Task Pro.
  *     security:
  *       - bearerAuth: []
