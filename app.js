@@ -6,7 +6,7 @@ import morgan from 'morgan';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
-import boardRouter from './routes/baardRouter.js';
+import boardRouter from './routes/boardRouter.js';
 import feedbackRouter from './routes/feedBack.js';
 import usersRouter from './routes/usersRouter.js';
 import connect from './server.js';
