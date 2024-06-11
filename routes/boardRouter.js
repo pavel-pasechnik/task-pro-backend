@@ -24,7 +24,7 @@ boardRouter.post('/', validateBody(createBaardSchema), createBaard);
  * /api/board/:
  *   post:
  *     summary: Create a new board.
- *     tags: [Public Routes]
+ *     tags: [Protected Routes]
  *     description: Create a new board in Task Pro.
  *     security:
  *       - bearerAuth: []
