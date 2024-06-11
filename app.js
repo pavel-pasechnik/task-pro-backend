@@ -32,7 +32,7 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: 'https://task-pro-backend-production.up.railway.app/',
+      url: 'https://task-pro-backend-ehpy.onrender.com/',
       description: 'Web server',
     },
     {
