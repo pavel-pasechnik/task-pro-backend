@@ -94,7 +94,7 @@ app.use('/avatars', express.static(path.resolve('public', 'avatars')));
 app.use('/api/boards', boardRouter);
 app.use('/api/feedback', feedbackRouter);
 app.use('/api/users', usersRouter);
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use((_, res) => {
   res.status(404).json({ message: 'Route not found' });

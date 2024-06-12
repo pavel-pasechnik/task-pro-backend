@@ -30,8 +30,8 @@ const boardRouter = express.Router();
 boardRouter.use(authMiddleware);
 boardRouter.post('/', validateBody(createBaardSchema), createBoard);
 /**
- * @swaggera
- * /api/boards/:
+ * @swagger
+ * /api/board/:
  *   post:
  *     summary: Create a new board.
  *     tags: [Boards]
@@ -82,10 +82,10 @@ boardRouter.post('/', validateBody(createBaardSchema), createBoard);
  *                   type: string
  *                   description: The background for the board.
  *                   example: default-background-url
- *                owner:
+ *                 owner:
  *                   type: string
- *                   description: The owner of the board.
- *                   example: 60d21b4667d0d8992e610c85
+ *                   description: The ID of the Board to which the board belongs.
+ *                   example: 60d0fe4f5311236168a109ca
  *       400:
  *         description: Bad request. Invalid input data.
  *         content:
@@ -96,13 +96,13 @@ boardRouter.post('/', validateBody(createBaardSchema), createBoard);
  *                 message:
  *                   type: string
  *                   description: Error message.
- *                   example: "is required"
+ *                   example: "Invalid input data"
  */
 
 boardRouter.post('/columns/:id', validateBody(createColumnSchema), createColumn);
 /**
  * @swagger
- * /api/boards/columns/{id}:
+ * /api/board/columns/{id}:
  *   post:
  *     summary: Create a new column.
  *     tags: [Columns]
@@ -144,10 +144,10 @@ boardRouter.post('/columns/:id', validateBody(createColumnSchema), createColumn)
  *                   type: string
  *                   description: The title of the column.
  *                   example: New Column
- *                owner:
- *                 type: string
- *                 description: The owner of the colum.
- *                 example: 60d21b4667d0d8992e610c85
+ *                 owner:
+ *                   type: string
+ *                   description: The ID of the column to which the column belongs.
+ *                   example: 60d0fe4f5311236168a109ca
  *
  *       400:
  *         description: Bad request. Invalid input data.
@@ -159,13 +159,13 @@ boardRouter.post('/columns/:id', validateBody(createColumnSchema), createColumn)
  *                 message:
  *                   type: string
  *                   description: Error message.
- *                   example: "is required"
+ *                   example: "Invalid input data"
  */
 
 boardRouter.post('/cards/:id', validateBody(createCardSchema), createCard);
 /**
  * @swagger
- * /api/boards/cards/{id}:
+ * /api/board/cards/{id}:
  *   post:
  *     summary: Create a new card.
  *     tags: [Cards]
@@ -231,10 +231,10 @@ boardRouter.post('/cards/:id', validateBody(createCardSchema), createCard);
  *                   type: number
  *                   description: The deadline of the card in Unix time.
  *                   example: 1717351234567
- *                owner:
+ *                 owner:
  *                   type: string
- *                   description: The owner of the card.
- *                   example: 60d21b4667d0d8992e610c85
+ *                   description: The ID of the column to which the card belongs.
+ *                   example: 60d0fe4f5311236168a109ca
  *
  *       400:
  *         description: Bad request. Invalid input data.
@@ -246,13 +246,13 @@ boardRouter.post('/cards/:id', validateBody(createCardSchema), createCard);
  *                 message:
  *                   type: string
  *                   description: Error message.
- *                   example: "is required"
+ *                   example: "Invalid input data"
  */
 
 boardRouter.put('/:id', validateBody(updateBaardSchema), updateBoard);
 /**
  * @swagger
- * /api/boards/{id}:
+ * /api/board/{id}:
  *   put:
  *     summary: Update a board.
  *     tags: [Boards]
@@ -310,10 +310,10 @@ boardRouter.put('/:id', validateBody(updateBaardSchema), updateBoard);
  *                   type: string
  *                   description: The background for the board.
  *                   example: updated-background-url
- *                owner:
+ *                 owner:
  *                   type: string
- *                   description: The owner of the board.
- *                   example: 60d21b4667d0d8992e610c85
+ *                   description: The ID of the Board to which the board belongs.
+ *                   example: 60d0fe4f5311236168a109ca
  *       400:
  *         description: Bad request. Invalid input data.
  *         content:
@@ -341,7 +341,7 @@ boardRouter.put('/:id', validateBody(updateBaardSchema), updateBoard);
 boardRouter.put('/columns/:id', validateBody(updateColumnSchema), updateColumn);
 /**
  * @swagger
- * /api/boards/columns/{id}:
+ * /api/board/columns/{id}:
  *   put:
  *     summary: Update a column.
  *     tags: [Columns]
@@ -383,10 +383,10 @@ boardRouter.put('/columns/:id', validateBody(updateColumnSchema), updateColumn);
  *                   type: string
  *                   description: The title of the column.
  *                   example: Updated Column Title
- *                owner:
- *                 type: string
- *                 description: The owner of the colum.
- *                 example: 60d21b4667d0d8992e610c85
+ *                 owner:
+ *                   type: string
+ *                   description: The ID of the column to which the column belongs.
+ *                   example: 60d0fe4f5311236168a109ca
  *
  *       400:
  *         description: Bad request. Invalid input data.
@@ -414,7 +414,7 @@ boardRouter.put('/columns/:id', validateBody(updateColumnSchema), updateColumn);
 boardRouter.put('/cards/:id', validateBody(updateCardSchema), updateCard);
 /**
  * @swagger
- * /api/boards/cards/{id}:
+ * /api/board/cards/{id}:
  *   put:
  *     summary: Update a card.
  *     tags: [Cards]
@@ -448,10 +448,6 @@ boardRouter.put('/cards/:id', validateBody(updateCardSchema), updateCard);
  *                 type: string
  *                 description: The new label color of the card.
  *                 example: blue
- *               deadline:
- *                 type: number
- *                 description: The new deadline of the card in Unix time.
- *                 example: 1717351234567
  *     responses:
  *       200:
  *         description: Card updated successfully.
@@ -511,7 +507,7 @@ boardRouter.put('/cards/:id', validateBody(updateCardSchema), updateCard);
 boardRouter.delete('/:id', cascadeDeleteColumnsAndCards, deleteBoard);
 /**
  * @swagger
- * /api/boards/{id}:
+ * /api/board/{id}:
  *   delete:
  *     summary: Delete a board and related columns and cards.
  *     tags: [Boards]
@@ -549,10 +545,10 @@ boardRouter.delete('/:id', cascadeDeleteColumnsAndCards, deleteBoard);
  *                   type: string
  *                   description: The background of the deleted board.
  *                   example: background-url
- *                owner:
+ *                 owner:
  *                   type: string
- *                   description: The owner of the board.
- *                   example: 60d21b4667d0d8992e610c85
+ *                   description: The ID of the Board to which the board belongs.
+ *                   example: 60d0fe4f5311236168a109ca
  *       400:
  *         description: Bad request. Invalid input data.
  *         content:
@@ -579,7 +575,7 @@ boardRouter.delete('/:id', cascadeDeleteColumnsAndCards, deleteBoard);
 boardRouter.delete('/columns/:id', cascadeDeleteCards, deleteColumn);
 /**
  * @swagger
- * /api/boards/columns/{id}:
+ * /api/board/columns/{id}:
  *   delete:
  *     summary: Delete a column and related cards.
  *     tags: [Columns]
@@ -609,10 +605,10 @@ boardRouter.delete('/columns/:id', cascadeDeleteCards, deleteColumn);
  *                   type: string
  *                   description: The title of the deleted column.
  *                   example: My Column
- *                owner:
- *                 type: string
- *                 description: The owner of the colum.
- *                 example: 60d21b4667d0d8992e610c85
+ *                 owner:
+ *                   type: string
+ *                   description: The ID of the column to which the column belongs.
+ *                   example: 60d0fe4f5311236168a109ca
  *       400:
  *         description: Bad request. Invalid input data.
  *         content:
@@ -640,7 +636,7 @@ boardRouter.delete('/cards/:id', deleteCard);
 
 /**
  * @swagger
- * /api/boards/cards/{id}:
+ * /api/board/cards/{id}:
  *   delete:
  *     summary: Delete a card.
  *     tags: [Cards]
@@ -713,7 +709,7 @@ boardRouter.delete('/cards/:id', deleteCard);
 boardRouter.get('/', getAllBoard);
 /**
  * @swagger
- * /api/boards:
+ * /api/board:
  *   get:
  *     summary: Get all boards.
  *     tags: [Boards]
@@ -753,9 +749,10 @@ boardRouter.get('/', getAllBoard);
  */
 
 boardRouter.get('/columns/:id', getAllColumns);
+
 /**
  * @swagger
- * /api/boards/columns/{id}:
+ * /api/board/columns/{id}:
  *   get:
  *     summary: Get all columns for a specific board.
  *     tags: [Columns]
@@ -782,21 +779,21 @@ boardRouter.get('/columns/:id', getAllColumns);
  *                   _id:
  *                     type: string
  *                     description: The column ID.
- *                     example: 6669a1f61ddd726fd095a98e
+ *                     example: 60d21b4667d0d8992e610c85
  *                   title:
  *                     type: string
  *                     description: The title of the column.
- *                     example: title
+ *                     example: To Do
  *                   owner:
  *                     type: string
  *                     description: The ID of the board to which the column belongs.
  *                     example: 66699a0b1ddd726fd095a980
- 
  */
 boardRouter.get('/cards/:id', getAllCard);
+
 /**
  * @swagger
- * /api/boards/cards/{id}:
+ * /api/board/cards/{id}:
  *   get:
  *     summary: Get all cards for a specific column.
  *     tags: [Cards]
@@ -845,4 +842,5 @@ boardRouter.get('/cards/:id', getAllCard);
  *                     description: The ID of the column to which the card belongs.
  *                     example: 66698ddf91397969c068458f
  */
+
 export default boardRouter;
