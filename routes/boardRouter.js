@@ -59,7 +59,7 @@ boardRouter.post('/', validateBody(createBaardSchema), createBoard);
  *                 description: The background for the board.
  *                 example: default-background-url
  *     responses:
- *       20:
+ *       201:
  *         description: Board created successfully.
  *         content:
  *           application/json:
