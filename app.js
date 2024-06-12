@@ -51,12 +51,28 @@ const swaggerDefinition = {
   },
   tags: [
     {
-      name: 'Public Routes',
-      description: 'Open routes accessible without authentication',
+      name: 'Auth',
+      description: 'Routes related to user authentication and authorization.',
     },
     {
-      name: 'Protected Routes',
-      description: 'Secure routes requiring a Bearer token',
+      name: 'Users',
+      description: 'Routes for managing user profiles and data.',
+    },
+    {
+      name: 'Boards',
+      description: 'Routes for creating, updating, and deleting boards.',
+    },
+    {
+      name: 'Columns',
+      description: 'Routes for managing board columns.',
+    },
+    {
+      name: 'Cards',
+      description: 'Routes for managing cards on boards.',
+    },
+    {
+      name: 'Feedback',
+      description: 'Rout for submitting and managing user feedback.',
     },
   ],
 };

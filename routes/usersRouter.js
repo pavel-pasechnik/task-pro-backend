@@ -26,7 +26,7 @@ const usersRouter = express.Router();
  * /api/users/current:
  *   get:
  *     summary: Getting information about the current Task Pro user.
- *     tags: [Protected Routes]
+ *     tags: [Users]
  *     description: Retrieve information about the currently authenticated user.
  *     security:
  *     - bearerAuth: []
@@ -56,7 +56,7 @@ const usersRouter = express.Router();
  *                      theme:
  *                        type: string
  *                        description: The user's theme.
- *                        example: Light
+ *                        example: light
  *       401:
  *         description: Unauthorized, token is missing or invalid.
  *         content:
@@ -77,7 +77,7 @@ usersRouter.get('/current', authMiddleware, currentUser);
  * /api/users/register:
  *   post:
  *     summary: Register a new Task Pro user.
- *     tags: [Public Routes]
+ *     tags: [Auth]
  *     description: Create a new user account.
  *     requestBody:
  *       description: User registration details.
@@ -149,7 +149,7 @@ usersRouter.post('/register', validateBody(createUserSchema), createUser);
  * /api/users/login:
  *   post:
  *     summary: Authenticate a Task Pro user.
- *     tags: [Public Routes]
+ *     tags: [Auth]
  *     description: Login to an existing user account.
  *     requestBody:
  *       description: User login details.
@@ -187,10 +187,14 @@ usersRouter.post('/register', validateBody(createUserSchema), createUser);
  *                       type: string
  *                       description: The user's avatar url.
  *                       example: http://avatar/Leanne-Graham.jpeg
+ *                     name:
+ *                       type: string
+ *                       description: The user's name.
+ *                       example: Leanne Graham
  *                     theme:
  *                       type: string
  *                       description: The user's theme.
- *                       example: Light
+ *                       example: light
  *       401:
  *         description: Unauthorized, email or password is incorrect.
  *         content:
@@ -211,10 +215,30 @@ usersRouter.post('/login', validateBody(loginUserSchema), loginUser);
  * /api/users:
  *   patch:
  *     summary: Update a Task Pro user.
- *     tags: [Protected Routes]
+ *     tags: [Users]
  *     description: Update current user.
  *     security:
  *     - bearerAuth: []
+ *     requestBody:
+ *       description: User update details.
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: User's name
+ *                 example: Test
+ *               email:
+ *                 type: string
+ *                 description: User's email.
+ *                 example: test@test.com
+ *               password:
+ *                 type: string
+ *                 description: User's password.
+ *                 example: password
  *     responses:
  *       200:
  *         description: User update successfully.
@@ -231,16 +255,16 @@ usersRouter.post('/login', validateBody(loginUserSchema), loginUser);
  *                   type: object
  *                   description: User data.
  *                   properties:
- *                     avatarURL:
+ *                     email:
  *                       type: string
- *                       description: The user's avatar url.
- *                       example: http://avatar/Leanne-Graham.jpeg
- *                     theme:
+ *                       description: The user's email.
+ *                       example: test@test.com
+ *                     name:
  *                       type: string
- *                       description: The user's theme.
- *                       example: Light
- *       401:
- *         description: Unauthorized, email or password is incorrect.
+ *                       description: The user's name.
+ *                       example: Leanne Graham
+ *       409:
+ *         description: Email in use.
  *         content:
  *           application/json:
  *             schema:
@@ -249,7 +273,7 @@ usersRouter.post('/login', validateBody(loginUserSchema), loginUser);
  *                 message:
  *                   type: string
  *                   description: The error message.
- *                   example: Email or password is wrong
+ *                   example: Email in use
  */
 
 usersRouter.patch('/', authMiddleware, validateBody(updateUserSchema), updateUser);
@@ -259,7 +283,7 @@ usersRouter.patch('/', authMiddleware, validateBody(updateUserSchema), updateUse
  * /api/users/avatars :
  *   patch:
  *     summary: Update the current user's avatar.
- *     tags: [Protected Routes]
+ *     tags: [Users]
  *     description: Upload and set a new avatar for the current user.
  *     security:
  *     - bearerAuth: []
@@ -317,7 +341,7 @@ usersRouter.patch('/avatars', authMiddleware, uploadMiddleware.single('avatar'),
  * /api/users/themes :
  *   patch:
  *     summary: Update the current user's theme.
- *     tags: [Protected Routes]
+ *     tags: [Users]
  *     description: Set a new theme for the current user.
  *     security:
  *     - bearerAuth: []
@@ -331,7 +355,7 @@ usersRouter.patch('/avatars', authMiddleware, uploadMiddleware.single('avatar'),
  *             properties:
  *               theme:
  *                 type: string
- *                 example: Dark
+ *                 example: dark
  *     responses:
  *       200:
  *         description: Theme updated successfully.
@@ -343,7 +367,7 @@ usersRouter.patch('/avatars', authMiddleware, uploadMiddleware.single('avatar'),
  *                 theme:
  *                   type: string
  *                   description: Updated theme.
- *                   example: Dark
+ *                   example: dark
  *       400:
  *         description: Invalid input.
  *         content:
@@ -375,7 +399,7 @@ usersRouter.patch('/themes', authMiddleware, validateBody(updateThemeSchema), up
  * /api/users/logout:
  *   post:
  *     summary: Logout a Task Pro user.
- *     tags: [Protected Routes]
+ *     tags: [Users]
  *     description: Logout from the current user session.
  *     security:
  *     - bearerAuth: []

@@ -71,10 +71,12 @@ export const logoutUser = async (req, res, next) => {
 export const currentUser = async (req, res, next) => {
   try {
     res.status(200).json({
-      name: req.user.name,
-      email: req.user.email,
-      avatarURL: req.user.avatarURL,
-      theme: req.user.theme,
+      user: {
+        name: req.user.name,
+        email: req.user.email,
+        avatarURL: req.user.avatarURL,
+        theme: req.user.theme,
+      },
     });
   } catch (error) {
     next(error);
@@ -147,7 +149,6 @@ export const updateUser = async (req, res, next) => {
 
     res.status(200).json({
       user: {
-        avatarURL: updatedUser.avatarURL,
         email: updatedUser.email,
         name: updatedUser.name,
       },

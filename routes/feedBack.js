@@ -13,7 +13,7 @@ feedbackRouter.use(auth);
  * /api/feedback:
  *   post:
  *     summary: Send feedback email.
- *     tags: [Protected Routes]
+ *     tags: [Feedback]
  *     description: Send an email with user feedback to the support team.
  *     security:
  *       - bearerAuth: []
