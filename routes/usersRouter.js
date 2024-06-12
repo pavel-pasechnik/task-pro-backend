@@ -25,7 +25,7 @@ const usersRouter = express.Router();
  * @swagger
  * /api/users/current:
  *   get:
- *     summary: Getting information about the current Task Pro user.
+ *     summary: Getting information about the current user.
  *     tags: [Users]
  *     description: Retrieve information about the currently authenticated user.
  *     security:
@@ -76,7 +76,7 @@ usersRouter.get('/current', authMiddleware, currentUser);
  * @swagger
  * /api/users/register:
  *   post:
- *     summary: Register a new Task Pro user.
+ *     summary: Register a new user.
  *     tags: [Auth]
  *     description: Create a new user account.
  *     requestBody:
@@ -148,7 +148,7 @@ usersRouter.post('/register', validateBody(createUserSchema), createUser);
  * @swagger
  * /api/users/login:
  *   post:
- *     summary: Authenticate a Task Pro user.
+ *     summary: Authenticate user.
  *     tags: [Auth]
  *     description: Login to an existing user account.
  *     requestBody:
@@ -214,7 +214,7 @@ usersRouter.post('/login', validateBody(loginUserSchema), loginUser);
  * @swagger
  * /api/users:
  *   patch:
- *     summary: Update a Task Pro user.
+ *     summary: Update current user.
  *     tags: [Users]
  *     description: Update current user.
  *     security:
@@ -398,7 +398,7 @@ usersRouter.patch('/themes', authMiddleware, validateBody(updateThemeSchema), up
  * @swagger
  * /api/users/logout:
  *   post:
- *     summary: Logout a Task Pro user.
+ *     summary: Logout current user.
  *     tags: [Users]
  *     description: Logout from the current user session.
  *     security:

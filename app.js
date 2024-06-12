@@ -60,7 +60,7 @@ const swaggerDefinition = {
     },
     {
       name: 'Boards',
-      description: 'Routes for creating, updating, and deleting boards.',
+      description: 'Routes for managing boards.',
     },
     {
       name: 'Columns',
@@ -72,7 +72,7 @@ const swaggerDefinition = {
     },
     {
       name: 'Feedback',
-      description: 'Rout for submitting and managing user feedback.',
+      description: 'Rout for submitting user feedback.',
     },
   ],
 };
