@@ -11,10 +11,13 @@ import {
 export const createBoard = asyncHandler(async (req, res, next) => {
   const baard = await createBoardService(req.body, req.user);
 
-  res.status(200).json(baard);
+  res.status(201).json(baard);
 });
 
 export const updateBoard = asyncHandler(async (req, res) => {
+  if (Object.keys(req.body).length === 0) {
+    return res.status(400).json({ error: 'Body must have at least one field' });
+  }
   const { id } = req.params;
   const { _id: owner } = req.user;
 
@@ -22,9 +25,6 @@ export const updateBoard = asyncHandler(async (req, res) => {
 
   if (!result) throw new HttpErrorBoard(404);
 
-  if (Object.keys(req.body).length === 0) {
-    return res.status(400).json({ error: 'Body must have at least one field' });
-  }
   res.status(200).json(result);
 });
 
@@ -41,6 +41,9 @@ export const deleteBoard = asyncHandler(async (req, res) => {
 
 export const getAllBoard = asyncHandler(async (req, res) => {
   const result = await getAllBoardService(req.user);
+  if (!result || result.length === 0) {
+    throw new HttpErrorBoard(404);
+  }
 
   res.status(200).json(result);
 });
