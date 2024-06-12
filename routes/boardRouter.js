@@ -1,9 +1,19 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import express from 'express';
 
-import { createBaard, deleteBaard, updateBaard } from '../controllers/baardControllers.js';
-import { createCard, deleteCard, updateCard } from '../controllers/cardContollers.js';
-import { createColumn, deleteColumn, updateColumn } from '../controllers/columnControllers.js';
+import {
+  createBoard,
+  deleteBoard,
+  getAllBoard,
+  updateBoard,
+} from '../controllers/boardControllers.js';
+import { createCard, deleteCard, getAllCard, updateCard } from '../controllers/cardContollers.js';
+import {
+  createColumn,
+  deleteColumn,
+  getAllColumns,
+  updateColumn,
+} from '../controllers/columnControllers.js';
 import validateBody from '../helpers/validateBody.js';
 import authMiddleware from '../middleware/auth.js';
 import { cascadeDeleteCards, cascadeDeleteColumnsAndCards } from '../middleware/boardMiddleware.js';
@@ -14,17 +24,17 @@ import {
   updateBaardSchema,
   updateCardSchema,
   updateColumnSchema,
-} from '../schemas/baardSchamas.js';
+} from '../schemas/boardSchamas.js';
 const boardRouter = express.Router();
 
 boardRouter.use(authMiddleware);
-boardRouter.post('/', validateBody(createBaardSchema), createBaard);
+boardRouter.post('/', validateBody(createBaardSchema), createBoard);
 /**
- * @swagger
- * /api/board/:
+ * @swaggera
+ * /api/boards/:
  *   post:
  *     summary: Create a new board.
- *     tags: [Protected Routes]
+ *     tags: [Boards]
  *     description: Create a new board in Task Pro.
  *     security:
  *       - bearerAuth: []
@@ -72,6 +82,10 @@ boardRouter.post('/', validateBody(createBaardSchema), createBaard);
  *                   type: string
  *                   description: The background for the board.
  *                   example: default-background-url
+ *                owner:
+ *                   type: string
+ *                   description: The owner of the board.
+ *                   example: 60d21b4667d0d8992e610c85
  *       400:
  *         description: Bad request. Invalid input data.
  *         content:
@@ -82,16 +96,16 @@ boardRouter.post('/', validateBody(createBaardSchema), createBaard);
  *                 message:
  *                   type: string
  *                   description: Error message.
- *                   example: "Invalid input data"
+ *                   example: "is required"
  */
 
 boardRouter.post('/columns/:id', validateBody(createColumnSchema), createColumn);
 /**
  * @swagger
- * /api/board/columns/{id}:
+ * /api/boards/columns/{id}:
  *   post:
  *     summary: Create a new column.
- *     tags: [Protected Routes]
+ *     tags: [Columns]
  *     description: Create a new column in a specific board in Task Pro.
  *     security:
  *       - bearerAuth: []
@@ -130,6 +144,10 @@ boardRouter.post('/columns/:id', validateBody(createColumnSchema), createColumn)
  *                   type: string
  *                   description: The title of the column.
  *                   example: New Column
+ *                owner:
+ *                 type: string
+ *                 description: The owner of the colum.
+ *                 example: 60d21b4667d0d8992e610c85
  *
  *       400:
  *         description: Bad request. Invalid input data.
@@ -141,16 +159,16 @@ boardRouter.post('/columns/:id', validateBody(createColumnSchema), createColumn)
  *                 message:
  *                   type: string
  *                   description: Error message.
- *                   example: "Invalid input data"
+ *                   example: "is required"
  */
 
 boardRouter.post('/cards/:id', validateBody(createCardSchema), createCard);
 /**
  * @swagger
- * /api/board/cards/{id}:
+ * /api/boards/cards/{id}:
  *   post:
  *     summary: Create a new card.
- *     tags: [Protected Routes]
+ *     tags: [Cards]
  *     description: Create a new card in a specific column in Task Pro.
  *     security:
  *       - bearerAuth: []
@@ -213,6 +231,10 @@ boardRouter.post('/cards/:id', validateBody(createCardSchema), createCard);
  *                   type: number
  *                   description: The deadline of the card in Unix time.
  *                   example: 1717351234567
+ *                owner:
+ *                   type: string
+ *                   description: The owner of the card.
+ *                   example: 60d21b4667d0d8992e610c85
  *
  *       400:
  *         description: Bad request. Invalid input data.
@@ -224,16 +246,16 @@ boardRouter.post('/cards/:id', validateBody(createCardSchema), createCard);
  *                 message:
  *                   type: string
  *                   description: Error message.
- *                   example: "Invalid input data"
+ *                   example: "is required"
  */
 
-boardRouter.put('/:id', validateBody(updateBaardSchema), updateBaard);
+boardRouter.put('/:id', validateBody(updateBaardSchema), updateBoard);
 /**
  * @swagger
- * /api/board/{id}:
+ * /api/boards/{id}:
  *   put:
  *     summary: Update a board.
- *     tags: [Protected Routes]
+ *     tags: [Boards]
  *     description: Update the details of an existing board in Task Pro.
  *     security:
  *       - bearerAuth: []
@@ -288,6 +310,10 @@ boardRouter.put('/:id', validateBody(updateBaardSchema), updateBaard);
  *                   type: string
  *                   description: The background for the board.
  *                   example: updated-background-url
+ *                owner:
+ *                   type: string
+ *                   description: The owner of the board.
+ *                   example: 60d21b4667d0d8992e610c85
  *       400:
  *         description: Bad request. Invalid input data.
  *         content:
@@ -309,16 +335,16 @@ boardRouter.put('/:id', validateBody(updateBaardSchema), updateBaard);
  *                 message:
  *                   type: string
  *                   description: Error message.
- *                   example: "Board not found"
+ *                   example: "not found"
  */
 
 boardRouter.put('/columns/:id', validateBody(updateColumnSchema), updateColumn);
 /**
  * @swagger
- * /api/board/columns/{id}:
+ * /api/boards/columns/{id}:
  *   put:
  *     summary: Update a column.
- *     tags: [Protected Routes]
+ *     tags: [Columns]
  *     description: Update the details of an existing column in Task Pro.
  *     security:
  *       - bearerAuth: []
@@ -357,6 +383,10 @@ boardRouter.put('/columns/:id', validateBody(updateColumnSchema), updateColumn);
  *                   type: string
  *                   description: The title of the column.
  *                   example: Updated Column Title
+ *                owner:
+ *                 type: string
+ *                 description: The owner of the colum.
+ *                 example: 60d21b4667d0d8992e610c85
  *
  *       400:
  *         description: Bad request. Invalid input data.
@@ -379,15 +409,15 @@ boardRouter.put('/columns/:id', validateBody(updateColumnSchema), updateColumn);
  *                 message:
  *                   type: string
  *                   description: Error message.
- *                   example: "Column not found"
+ *                   example: "not found"
  */
 boardRouter.put('/cards/:id', validateBody(updateCardSchema), updateCard);
 /**
  * @swagger
- * /api/board/cards/{id}:
+ * /api/boards/cards/{id}:
  *   put:
  *     summary: Update a card.
- *     tags: [Protected Routes]
+ *     tags: [Cards]
  *     description: Update the details of an existing card in Task Pro.
  *     security:
  *       - bearerAuth: []
@@ -475,16 +505,16 @@ boardRouter.put('/cards/:id', validateBody(updateCardSchema), updateCard);
  *                 message:
  *                   type: string
  *                   description: Error message.
- *                   example: "Card not found"
+ *                   example: "not found"
  */
 
-boardRouter.delete('/:id', cascadeDeleteColumnsAndCards, deleteBaard);
+boardRouter.delete('/:id', cascadeDeleteColumnsAndCards, deleteBoard);
 /**
  * @swagger
- * /api/board/{id}:
+ * /api/boards/{id}:
  *   delete:
  *     summary: Delete a board and related columns and cards.
- *     tags: [Protected Routes]
+ *     tags: [Boards]
  *     description: Delete an existing board along with all its related columns and cards in Task Pro.
  *     security:
  *       - bearerAuth: []
@@ -519,6 +549,10 @@ boardRouter.delete('/:id', cascadeDeleteColumnsAndCards, deleteBaard);
  *                   type: string
  *                   description: The background of the deleted board.
  *                   example: background-url
+ *                owner:
+ *                   type: string
+ *                   description: The owner of the board.
+ *                   example: 60d21b4667d0d8992e610c85
  *       400:
  *         description: Bad request. Invalid input data.
  *         content:
@@ -540,15 +574,15 @@ boardRouter.delete('/:id', cascadeDeleteColumnsAndCards, deleteBaard);
  *                 message:
  *                   type: string
  *                   description: Error message.
- *                   example: "Board not found"
+ *                   example: "not found"
  */
 boardRouter.delete('/columns/:id', cascadeDeleteCards, deleteColumn);
 /**
  * @swagger
- * /api/board/columns/{id}:
+ * /api/boards/columns/{id}:
  *   delete:
  *     summary: Delete a column and related cards.
- *     tags: [Protected Routes]
+ *     tags: [Columns]
  *     description: Delete an existing column along with all its related cards in Task Pro.
  *     security:
  *       - bearerAuth: []
@@ -575,6 +609,10 @@ boardRouter.delete('/columns/:id', cascadeDeleteCards, deleteColumn);
  *                   type: string
  *                   description: The title of the deleted column.
  *                   example: My Column
+ *                owner:
+ *                 type: string
+ *                 description: The owner of the colum.
+ *                 example: 60d21b4667d0d8992e610c85
  *       400:
  *         description: Bad request. Invalid input data.
  *         content:
@@ -596,16 +634,16 @@ boardRouter.delete('/columns/:id', cascadeDeleteCards, deleteColumn);
  *                 message:
  *                   type: string
  *                   description: Error message.
- *                   example: "Column not found"
+ *                   example: "not found"
  */
 boardRouter.delete('/cards/:id', deleteCard);
 
 /**
  * @swagger
- * /api/board/cards/{id}:
+ * /api/boards/cards/{id}:
  *   delete:
  *     summary: Delete a card.
- *     tags: [Protected Routes]
+ *     tags: [Cards]
  *     description: Delete an existing card in Task Pro.
  *     security:
  *       - bearerAuth: []
@@ -644,6 +682,10 @@ boardRouter.delete('/cards/:id', deleteCard);
  *                   type: number
  *                   description: The deadline of the deleted card in Unix time.
  *                   example: 1717351234567
+ *                 owner:
+ *                   type: string
+ *                   description: The ID of the column to which the card belongs.
+ *                   example: 60d0fe4f5311236168a109ca
  *       400:
  *         description: Bad request. Invalid input data.
  *         content:
@@ -665,6 +707,142 @@ boardRouter.delete('/cards/:id', deleteCard);
  *                 message:
  *                   type: string
  *                   description: Error message.
- *                   example: "Card not found"
+ *                   example: "not found"
+ */
+
+boardRouter.get('/', getAllBoard);
+/**
+ * @swagger
+ * /api/boards:
+ *   get:
+ *     summary: Get all boards.
+ *     tags: [Boards]
+ *     description: Retrieve a list of all boards.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: A list of boards.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     description: The board ID.
+ *                     example: 60d21b4667d0d8992e610c85
+ *                   title:
+ *                     type: string
+ *                     description: The title of the board.
+ *                     example: Project Board
+ *                   icon:
+ *                     type: string
+ *                     description: The icon of the board.
+ *                     example: icon-url
+ *                   background:
+ *                     type: string
+ *                     description: The background of the board.
+ *                     example: background-url
+ *                   owner:
+ *                     type: string
+ *                     description: The ID of the user who owns the board.
+ *                     example: 60d0fe4f5311236168a109ca
+ */
+
+boardRouter.get('/columns/:id', getAllColumns);
+/**
+ * @swagger
+ * /api/boards/columns/{id}:
+ *   get:
+ *     summary: Get all columns for a specific board.
+ *     tags: [Columns]
+ *     description: Retrieve a list of all columns for a specific board by its ID.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the board.
+ *     responses:
+ *       200:
+ *         description: A list of columns for the specified board.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     description: The column ID.
+ *                     example: 6669a1f61ddd726fd095a98e
+ *                   title:
+ *                     type: string
+ *                     description: The title of the column.
+ *                     example: title
+ *                   owner:
+ *                     type: string
+ *                     description: The ID of the board to which the column belongs.
+ *                     example: 66699a0b1ddd726fd095a980
+ 
+ */
+boardRouter.get('/cards/:id', getAllCard);
+/**
+ * @swagger
+ * /api/boards/cards/{id}:
+ *   get:
+ *     summary: Get all cards for a specific column.
+ *     tags: [Cards]
+ *     description: Retrieve a list of all cards for a specific column by its ID.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the column.
+ *     responses:
+ *       200:
+ *         description: A list of cards for the specified column.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     description: The card ID.
+ *                     example: 6669929932fdf8b7cae94f80
+ *                   title:
+ *                     type: string
+ *                     description: The title of the card.
+ *                     example: New122kk
+ *                   description:
+ *                     type: string
+ *                     description: The description of the card.
+ *                     example: This is a new task description2112
+ *                   labelcolor:
+ *                     type: string
+ *                     description: The label color of the card.
+ *                     example: green
+ *                   deadline:
+ *                     type: number
+ *                     description: The deadline of the card in Unix time.
+ *                     example: 1717351234567
+ *                   owner:
+ *                     type: string
+ *                     description: The ID of the column to which the card belongs.
+ *                     example: 66698ddf91397969c068458f
  */
 export default boardRouter;

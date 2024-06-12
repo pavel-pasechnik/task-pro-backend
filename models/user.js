@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema(
     },
     theme: {
       type: String,
-      default: 'Light',
+      default: 'light',
     },
     token: {
       type: String,

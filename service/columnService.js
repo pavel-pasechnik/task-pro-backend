@@ -10,3 +10,5 @@ export const updateColumnService = async (data, body) =>
   Column.findByIdAndUpdate(data, body, { new: true });
 
 export const deleteColumnService = data => Column.findByIdAndDelete(data);
+
+export const getAllColumnService = async baardId => Column.find({ owner: baardId });

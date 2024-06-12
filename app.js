@@ -32,7 +32,7 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: 'https://task-pro-backend-production.up.railway.app/',
+      url: 'https://task-pro-backend-ehpy.onrender.com/',
       description: 'Web server',
     },
     {
@@ -51,12 +51,28 @@ const swaggerDefinition = {
   },
   tags: [
     {
-      name: 'Public Routes',
-      description: 'Open routes accessible without authentication',
+      name: 'Auth',
+      description: 'Routes related to user authentication and authorization.',
     },
     {
-      name: 'Protected Routes',
-      description: 'Secure routes requiring a Bearer token',
+      name: 'Users',
+      description: 'Routes for managing user profiles and data.',
+    },
+    {
+      name: 'Boards',
+      description: 'Routes for managing boards.',
+    },
+    {
+      name: 'Columns',
+      description: 'Routes for managing board columns.',
+    },
+    {
+      name: 'Cards',
+      description: 'Routes for managing cards on boards.',
+    },
+    {
+      name: 'Feedback',
+      description: 'Rout for submitting user feedback.',
     },
   ],
 };
@@ -75,10 +91,10 @@ app.use(express.json());
 
 app.use('/avatars', express.static(path.resolve('public', 'avatars')));
 
-app.use('/api/board', boardRouter);
+app.use('/api/boards', boardRouter);
 app.use('/api/feedback', feedbackRouter);
 app.use('/api/users', usersRouter);
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use((_, res) => {
   res.status(404).json({ message: 'Route not found' });

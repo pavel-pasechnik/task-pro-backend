@@ -7,11 +7,17 @@ import {
   logoutUser,
   updateAvatar,
   updateTheme,
+  updateUser,
 } from '../controllers/usersControllers.js';
 import validateBody from '../helpers/validateBody.js';
 import authMiddleware from '../middleware/auth.js';
 import uploadMiddleware from '../middleware/upload.js';
-import { createUserSchema, loginUserSchema, updateThemeSchema } from '../schemas/usersSchemas.js';
+import {
+  createUserSchema,
+  loginUserSchema,
+  updateThemeSchema,
+  updateUserSchema,
+} from '../schemas/usersSchemas.js';
 
 const usersRouter = express.Router();
 
@@ -19,8 +25,8 @@ const usersRouter = express.Router();
  * @swagger
  * /api/users/current:
  *   get:
- *     summary: Getting information about the current Task Pro user.
- *     tags: [Protected Routes]
+ *     summary: Getting information about the current user.
+ *     tags: [Users]
  *     description: Retrieve information about the currently authenticated user.
  *     security:
  *     - bearerAuth: []
@@ -50,7 +56,7 @@ const usersRouter = express.Router();
  *                      theme:
  *                        type: string
  *                        description: The user's theme.
- *                        example: Light
+ *                        example: light
  *       401:
  *         description: Unauthorized, token is missing or invalid.
  *         content:
@@ -70,8 +76,8 @@ usersRouter.get('/current', authMiddleware, currentUser);
  * @swagger
  * /api/users/register:
  *   post:
- *     summary: Register a new Task Pro user.
- *     tags: [Public Routes]
+ *     summary: Register a new user.
+ *     tags: [Auth]
  *     description: Create a new user account.
  *     requestBody:
  *       description: User registration details.
@@ -142,8 +148,8 @@ usersRouter.post('/register', validateBody(createUserSchema), createUser);
  * @swagger
  * /api/users/login:
  *   post:
- *     summary: Authenticate a Task Pro user.
- *     tags: [Public Routes]
+ *     summary: Authenticate user.
+ *     tags: [Auth]
  *     description: Login to an existing user account.
  *     requestBody:
  *       description: User login details.
@@ -181,10 +187,14 @@ usersRouter.post('/register', validateBody(createUserSchema), createUser);
  *                       type: string
  *                       description: The user's avatar url.
  *                       example: http://avatar/Leanne-Graham.jpeg
+ *                     name:
+ *                       type: string
+ *                       description: The user's name.
+ *                       example: Leanne Graham
  *                     theme:
  *                       type: string
  *                       description: The user's theme.
- *                       example: Light
+ *                       example: light
  *       401:
  *         description: Unauthorized, email or password is incorrect.
  *         content:
@@ -202,18 +212,59 @@ usersRouter.post('/login', validateBody(loginUserSchema), loginUser);
 
 /**
  * @swagger
- * /api/users/logout:
- *   post:
- *     summary: Logout a Task Pro user.
- *     tags: [Protected Routes]
- *     description: Logout from the current user session.
+ * /api/users:
+ *   patch:
+ *     summary: Update current user.
+ *     tags: [Users]
+ *     description: Update current user.
  *     security:
  *     - bearerAuth: []
+ *     requestBody:
+ *       description: User update details.
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: User's name
+ *                 example: Test
+ *               email:
+ *                 type: string
+ *                 description: User's email.
+ *                 example: test@test.com
+ *               password:
+ *                 type: string
+ *                 description: User's password.
+ *                 example: password
  *     responses:
- *       204:
- *         description: No Content. User logged out successfully.
- *       401:
- *         description: Unauthorized, token is missing or invalid.
+ *       200:
+ *         description: User update successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: Authentication token.
+ *                   example: jwt.token.here
+ *                 user:
+ *                   type: object
+ *                   description: User data.
+ *                   properties:
+ *                     email:
+ *                       type: string
+ *                       description: The user's email.
+ *                       example: test@test.com
+ *                     name:
+ *                       type: string
+ *                       description: The user's name.
+ *                       example: Leanne Graham
+ *       409:
+ *         description: Email in use.
  *         content:
  *           application/json:
  *             schema:
@@ -222,17 +273,17 @@ usersRouter.post('/login', validateBody(loginUserSchema), loginUser);
  *                 message:
  *                   type: string
  *                   description: The error message.
- *                   example: Not authorized
+ *                   example: Email in use
  */
 
-usersRouter.post('/logout', authMiddleware, logoutUser);
+usersRouter.patch('/', authMiddleware, validateBody(updateUserSchema), updateUser);
 
 /**
  * @swagger
  * /api/users/avatars :
  *   patch:
  *     summary: Update the current user's avatar.
- *     tags: [Protected Routes]
+ *     tags: [Users]
  *     description: Upload and set a new avatar for the current user.
  *     security:
  *     - bearerAuth: []
@@ -290,7 +341,7 @@ usersRouter.patch('/avatars', authMiddleware, uploadMiddleware.single('avatar'),
  * /api/users/themes :
  *   patch:
  *     summary: Update the current user's theme.
- *     tags: [Protected Routes]
+ *     tags: [Users]
  *     description: Set a new theme for the current user.
  *     security:
  *     - bearerAuth: []
@@ -304,7 +355,7 @@ usersRouter.patch('/avatars', authMiddleware, uploadMiddleware.single('avatar'),
  *             properties:
  *               theme:
  *                 type: string
- *                 example: Dark
+ *                 example: dark
  *     responses:
  *       200:
  *         description: Theme updated successfully.
@@ -316,7 +367,7 @@ usersRouter.patch('/avatars', authMiddleware, uploadMiddleware.single('avatar'),
  *                 theme:
  *                   type: string
  *                   description: Updated theme.
- *                   example: Dark
+ *                   example: dark
  *       400:
  *         description: Invalid input.
  *         content:
@@ -342,5 +393,32 @@ usersRouter.patch('/avatars', authMiddleware, uploadMiddleware.single('avatar'),
  */
 
 usersRouter.patch('/themes', authMiddleware, validateBody(updateThemeSchema), updateTheme);
+
+/**
+ * @swagger
+ * /api/users/logout:
+ *   post:
+ *     summary: Logout current user.
+ *     tags: [Users]
+ *     description: Logout from the current user session.
+ *     security:
+ *     - bearerAuth: []
+ *     responses:
+ *       204:
+ *         description: No Content. User logged out successfully.
+ *       401:
+ *         description: Unauthorized, token is missing or invalid.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: The error message.
+ *                   example: Not authorized
+ */
+
+usersRouter.post('/logout', authMiddleware, logoutUser);
 
 export default usersRouter;
