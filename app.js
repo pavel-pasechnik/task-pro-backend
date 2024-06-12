@@ -91,7 +91,7 @@ app.use(express.json());
 
 app.use('/avatars', express.static(path.resolve('public', 'avatars')));
 
-app.use('/api/board', boardRouter);
+app.use('/api/boards', boardRouter);
 app.use('/api/feedback', feedbackRouter);
 app.use('/api/users', usersRouter);
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

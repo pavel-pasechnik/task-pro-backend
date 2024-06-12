@@ -13,3 +13,10 @@ const HttpError = (status, message = messageList[status]) => {
 };
 
 export default HttpError;
+
+export class HttpErrorBoard extends Error {
+  constructor(status, message = messageList[status]) {
+    super(message);
+    this.status = status;
+  }
+}
