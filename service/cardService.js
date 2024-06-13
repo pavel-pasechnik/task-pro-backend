@@ -7,3 +7,5 @@ export const updateCardService = async (data, body) =>
   Card.findByIdAndUpdate(data, body, { new: true });
 
 export const deleteCardService = data => Card.findByIdAndDelete(data);
+
+export const getAllCardService = async columnID => Card.find({ owner: columnID });

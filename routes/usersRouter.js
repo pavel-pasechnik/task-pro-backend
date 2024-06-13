@@ -1,11 +1,11 @@
 import express from 'express';
 
-import { needHelp } from '../controllers/sendHelpControllers.js';
 import {
   createUser,
   currentUser,
   loginUser,
   logoutUser,
+  needHelp,
   updateAvatar,
   updateTheme,
   updateUser,
@@ -13,10 +13,10 @@ import {
 import validateBody from '../helpers/validateBody.js';
 import authMiddleware from '../middleware/auth.js';
 import uploadMiddleware from '../middleware/upload.js';
-import { needHelpSchema } from '../schemas/needHelpSchemas.js';
 import {
   createUserSchema,
   loginUserSchema,
+  needHelpSchema,
   updateThemeSchema,
   updateUserSchema,
 } from '../schemas/usersSchemas.js';
@@ -400,13 +400,13 @@ usersRouter.patch('/themes', authMiddleware, validateBody(updateThemeSchema), up
  * @swagger
  * /api/users/help:
  *   post:
- *     summary: Send feedback email.
+ *     summary: Send need help email.
  *     tags: [Users]
  *     description: Send an email with user message to the support team.
  *     security:
  *       - bearerAuth: []
  *     requestBody:
- *       description: User feedback details.
+ *       description: User need help details.
  *       required: true
  *       content:
  *         application/json:
@@ -419,7 +419,7 @@ usersRouter.patch('/themes', authMiddleware, validateBody(updateThemeSchema), up
  *                 example: user@example.com
  *               comment:
  *                 type: string
- *                 description: User's feedback comment.
+ *                 description: User's need help comment.
  *                 example: I need help with my account.
  *     responses:
  *       200:
