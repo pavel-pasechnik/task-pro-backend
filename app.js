@@ -6,7 +6,7 @@ import morgan from 'morgan';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
-import boardRouter from './routes/boardRouter.js';
+import boardsRouter from './routes/boardsRouter.js';
 import usersRouter from './routes/usersRouter.js';
 import connect from './server.js';
 
@@ -86,7 +86,7 @@ app.use(express.json());
 
 app.use('/avatars', express.static(path.resolve('public', 'avatars')));
 
-app.use('/api/boards', boardRouter);
+app.use('/api/boards', boardsRouter);
 app.use('/api/users', usersRouter);
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

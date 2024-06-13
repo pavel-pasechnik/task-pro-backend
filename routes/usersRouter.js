@@ -282,7 +282,7 @@ usersRouter.patch('/', authMiddleware, validateBody(updateUserSchema), updateUse
 
 /**
  * @swagger
- * /api/users/avatars :
+ * /api/users/avatars:
  *   patch:
  *     summary: Update the current user's avatar.
  *     tags: [Users]
@@ -340,7 +340,7 @@ usersRouter.patch('/avatars', authMiddleware, uploadMiddleware.single('avatar'),
 
 /**
  * @swagger
- * /api/users/themes :
+ * /api/users/themes:
  *   patch:
  *     summary: Update the current user's theme.
  *     tags: [Users]
