@@ -15,7 +15,7 @@ export const updateBaardSchema = Joi.object({
   title: Joi.string().trim().min(3).optional(),
   icon: Joi.string().trim().optional(),
   background: Joi.string().trim().optional(),
-});
+}).min(1);
 
 // column
 export const createColumnSchema = Joi.object({

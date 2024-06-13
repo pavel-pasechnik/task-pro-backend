@@ -13,7 +13,17 @@ export const createCard = asyncHandler(async (req, res, next) => {
   const { title, description, labelcolor, deadline } = req.body;
 
   const card = await createCardService({ title, description, labelcolor, deadline, columnID });
-  res.status(201).json(card);
+
+  const response = {
+    id: card._id,
+    title: card.title,
+    description: card.description,
+    labelcolor: card.labelcolor,
+    deadline: card.deadline,
+    owner: card.owner,
+  };
+
+  res.status(201).json(response);
 });
 
 export const updateCard = asyncHandler(async (req, res, next) => {
@@ -22,20 +32,36 @@ export const updateCard = asyncHandler(async (req, res, next) => {
   }
   const { id: columnID } = req.params;
 
-  const result = await updateCardService({ _id: columnID }, req.body);
-  if (!result) throw new HttpErrorBoard(404);
+  const card = await updateCardService({ _id: columnID }, req.body);
+  if (!card) throw new HttpErrorBoard(404);
 
-  res.status(200).json(result);
+  const response = {
+    id: card._id,
+    title: card.title,
+    description: card.description,
+    labelcolor: card.labelcolor,
+    deadline: card.deadline,
+    owner: card.owner,
+  };
+  res.status(200).json(response);
 });
 
 export const deleteCard = asyncHandler(async (req, res, next) => {
   const { id: columnID } = req.params;
 
-  const result = await deleteCardService({ _id: columnID });
+  const card = await deleteCardService({ _id: columnID });
 
-  if (!result) throw new HttpErrorBoard(404);
+  if (!card) throw new HttpErrorBoard(404);
+  const response = {
+    id: card._id,
+    title: card.title,
+    description: card.description,
+    labelcolor: card.labelcolor,
+    deadline: card.deadline,
+    owner: card.owner,
+  };
 
-  res.status(200).json(result);
+  res.status(200).json(response);
 });
 
 export const getAllCard = asyncHandler(async (req, res, next) => {
