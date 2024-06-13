@@ -7,7 +7,6 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
 import boardRouter from './routes/boardRouter.js';
-import feedbackRouter from './routes/feedBack.js';
 import usersRouter from './routes/usersRouter.js';
 import connect from './server.js';
 
@@ -70,10 +69,6 @@ const swaggerDefinition = {
       name: 'Cards',
       description: 'Routes for managing cards on boards.',
     },
-    {
-      name: 'Feedback',
-      description: 'Rout for submitting user feedback.',
-    },
   ],
 };
 
@@ -92,7 +87,6 @@ app.use(express.json());
 app.use('/avatars', express.static(path.resolve('public', 'avatars')));
 
 app.use('/api/boards', boardRouter);
-app.use('/api/feedback', feedbackRouter);
 app.use('/api/users', usersRouter);
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

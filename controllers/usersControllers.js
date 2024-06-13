@@ -2,7 +2,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import mime from 'mime-types';
 
-import HttpError from '../helpers/HttpError.js';
+import { HttpError } from '../helpers/HttpError.js';
+import sendHelpEmail from '../helpers/mail.js';
 import { cloudinaryMiddleware } from '../middleware/cloudinary.js';
 import User from '../models/user.js';
 
@@ -153,6 +154,16 @@ export const updateUser = async (req, res, next) => {
         name: updatedUser.name,
       },
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const needHelp = async (req, res, next) => {
+  try {
+    const { email, comment } = req.body;
+    await sendHelpEmail(email, comment);
+    res.status(200).json({ message: 'Email sent successfully' });
   } catch (error) {
     next(error);
   }
