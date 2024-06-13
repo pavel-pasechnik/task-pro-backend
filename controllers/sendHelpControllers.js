@@ -1,6 +1,6 @@
 import sendHelpEmail from '../helpers/mail.js';
 
-export const sendFeedback = async (req, res, next) => {
+export const needHelp = async (req, res, next) => {
   try {
     const { email, comment } = req.body;
     await sendHelpEmail(email, comment);

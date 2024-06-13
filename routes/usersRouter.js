@@ -1,5 +1,6 @@
 import express from 'express';
 
+import { needHelp } from '../controllers/sendHelpControllers.js';
 import {
   createUser,
   currentUser,
@@ -12,6 +13,7 @@ import {
 import validateBody from '../helpers/validateBody.js';
 import authMiddleware from '../middleware/auth.js';
 import uploadMiddleware from '../middleware/upload.js';
+import { needHelpSchema } from '../schemas/needHelpSchemas.js';
 import {
   createUserSchema,
   loginUserSchema,
@@ -393,6 +395,68 @@ usersRouter.patch('/avatars', authMiddleware, uploadMiddleware.single('avatar'),
  */
 
 usersRouter.patch('/themes', authMiddleware, validateBody(updateThemeSchema), updateTheme);
+
+/**
+ * @swagger
+ * /api/users/help:
+ *   post:
+ *     summary: Send feedback email.
+ *     tags: [Users]
+ *     description: Send an email with user message to the support team.
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       description: User feedback details.
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: User's email address.
+ *                 example: user@example.com
+ *               comment:
+ *                 type: string
+ *                 description: User's feedback comment.
+ *                 example: I need help with my account.
+ *     responses:
+ *       200:
+ *         description: Feedback email sent successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Success message.
+ *                   example: Email sent successfully.
+ *       400:
+ *         description: Bad request. Invalid input data.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: Invalid input data.
+ *       500:
+ *         description: Server error. Failed to send email.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: Failed to send email.
+ */
+usersRouter.post('/help', authMiddleware, validateBody(needHelpSchema), needHelp);
 
 /**
  * @swagger
