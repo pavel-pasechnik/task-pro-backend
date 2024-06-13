@@ -24,10 +24,6 @@ export const createColumn = asyncHandler(async (req, res, next) => {
 });
 
 export const updateColumn = asyncHandler(async (req, res, next) => {
-  if (Object.keys(req.body).length === 0) {
-    return res.status(400).json({ error: 'Body must have at least one field' });
-  }
-
   const { id: baardId } = req.params;
 
   const column = await updateColumnService({ _id: baardId }, req.body);

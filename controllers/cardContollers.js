@@ -27,9 +27,6 @@ export const createCard = asyncHandler(async (req, res, next) => {
 });
 
 export const updateCard = asyncHandler(async (req, res, next) => {
-  if (Object.keys(req.body).length === 0) {
-    return res.status(400).json({ error: 'Body must have at least one field' });
-  }
   const { id: columnID } = req.params;
 
   const card = await updateCardService({ _id: columnID }, req.body);
