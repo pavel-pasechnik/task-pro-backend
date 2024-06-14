@@ -149,6 +149,7 @@ export const updateUser = async (req, res, next) => {
     );
 
     res.status(200).json({
+      token: updatedUser.token,
       user: {
         email: updatedUser.email,
         name: updatedUser.name,
