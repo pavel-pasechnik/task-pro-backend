@@ -20,3 +20,8 @@ export const loginUserSchema = Joi.object({
 export const updateThemeSchema = Joi.object({
   theme: Joi.string().trim().min(1).lowercase().required(),
 });
+
+export const needHelpSchema = Joi.object({
+  email: Joi.string().trim().lowercase().email().max(64).required(),
+  comment: Joi.string().trim().min(3).max(78).required(),
+});
