@@ -66,7 +66,7 @@ boardRouter.post('/', validateBody(createBaardSchema), createBoard);
  *             schema:
  *               type: object
  *               properties:
- *                 _id:
+ *                 id:
  *                   type: string
  *                   description: The ID of the board.
  *                   example: 60d21b4667d0d8992e610c85
@@ -96,7 +96,7 @@ boardRouter.post('/', validateBody(createBaardSchema), createBoard);
  *                 message:
  *                   type: string
  *                   description: Error message.
- *                   example: "title is required"
+ *                   example: Помилка від Joi або іншої бібліотеки валідації
  *       401:
  *         description: Unauthorized, token is missing or invalid.
  *         content:
@@ -147,7 +147,7 @@ boardRouter.post('/columns/:id', validateBody(createColumnSchema), createColumn)
  *             schema:
  *               type: object
  *               properties:
- *                 _id:
+ *                 id:
  *                   type: string
  *                   description: The ID of the column.
  *                   example: 60d21b4667d0d8992e610c85
@@ -159,7 +159,6 @@ boardRouter.post('/columns/:id', validateBody(createColumnSchema), createColumn)
  *                   type: string
  *                   description: The ID of the column to which the column belongs.
  *                   example: 60d0fe4f5311236168a109ca
- *
  *       400:
  *         description: Bad request.
  *         content:
@@ -170,7 +169,7 @@ boardRouter.post('/columns/:id', validateBody(createColumnSchema), createColumn)
  *                 message:
  *                   type: string
  *                   description: Error message.
- *                   example: "title is required"
+ *                   example: Помилка від Joi або іншої бібліотеки валідації
  *       401:
  *         description: Unauthorized, token is missing or invalid.
  *         content:
@@ -233,7 +232,7 @@ boardRouter.post('/cards/:id', validateBody(createCardSchema), createCard);
  *             schema:
  *               type: object
  *               properties:
- *                 _id:
+ *                 id:
  *                   type: string
  *                   description: The ID of the card.
  *                   example: 60d21b4667d0d8992e610c85
@@ -257,7 +256,6 @@ boardRouter.post('/cards/:id', validateBody(createCardSchema), createCard);
  *                   type: string
  *                   description: The ID of the column to which the card belongs.
  *                   example: 60d0fe4f5311236168a109ca
- *
  *       400:
  *         description: Bad request.
  *         content:
@@ -268,7 +266,7 @@ boardRouter.post('/cards/:id', validateBody(createCardSchema), createCard);
  *                 message:
  *                   type: string
  *                   description: Error message.
- *                   example: "title is required"
+ *                   example: Помилка від Joi або іншої бібліотеки валідації
  *       401:
  *         description: Unauthorized, token is missing or invalid.
  *         content:
@@ -327,7 +325,7 @@ boardRouter.patch('/:id', validateBody(updateBaardSchema), updateBoard);
  *             schema:
  *               type: object
  *               properties:
- *                 _id:
+ *                 id:
  *                   type: string
  *                   description: The ID of the board.
  *                   example: 60d21b4667d0d8992e610c85
@@ -357,7 +355,7 @@ boardRouter.patch('/:id', validateBody(updateBaardSchema), updateBoard);
  *                 error:
  *                   type: string
  *                   description: Error message.
- *                   example: "Body must have at least one field"
+ *                   example: Помилка від Joi або іншої бібліотеки валідації
  *       404:
  *         description: Board not found.
  *         content:
@@ -419,7 +417,7 @@ boardRouter.put('/columns/:id', validateBody(updateColumnSchema), updateColumn);
  *             schema:
  *               type: object
  *               properties:
- *                 _id:
+ *                 id:
  *                   type: string
  *                   description: The ID of the column.
  *                   example: 60d21b4667d0d8992e610c85
@@ -442,7 +440,7 @@ boardRouter.put('/columns/:id', validateBody(updateColumnSchema), updateColumn);
  *                 error:
  *                   type: string
  *                   description: Error message.
- *                   example: "Body must have at least one field"
+ *                   example: Помилка від Joi або іншої бібліотеки валідації
  *       404:
  *         description: Column not found.
  *         content:
@@ -511,7 +509,7 @@ boardRouter.patch('/cards/:id', validateBody(updateCardSchema), updateCard);
  *             schema:
  *               type: object
  *               properties:
- *                 _id:
+ *                 id:
  *                   type: string
  *                   description: The ID of the card.
  *                   example: 60d21b4667d0d8992e610c85
@@ -545,7 +543,7 @@ boardRouter.patch('/cards/:id', validateBody(updateCardSchema), updateCard);
  *                 error:
  *                   type: string
  *                   description: Error message.
- *                   example: "Body must have at least one field"
+ *                   example: Помилка від Joi або іншої бібліотеки валідації
  *       404:
  *         description: Card not found.
  *         content:
@@ -595,7 +593,7 @@ boardRouter.delete('/:id', cascadeDeleteColumnsAndCards, deleteBoard);
  *             schema:
  *               type: object
  *               properties:
- *                 _id:
+ *                 id:
  *                   type: string
  *                   description: The ID of the deleted board.
  *                   example: 60d21b4667d0d8992e610c85
@@ -663,7 +661,7 @@ boardRouter.delete('/columns/:id', cascadeDeleteCards, deleteColumn);
  *             schema:
  *               type: object
  *               properties:
- *                 _id:
+ *                 id:
  *                   type: string
  *                   description: The ID of the deleted column.
  *                   example: 60d21b4667d0d8992e610c85
@@ -724,7 +722,7 @@ boardRouter.delete('/cards/:id', deleteCard);
  *             schema:
  *               type: object
  *               properties:
- *                 _id:
+ *                 id:
  *                   type: string
  *                   description: The ID of the deleted card.
  *                   example: 60d21b4667d0d8992e610c85
@@ -792,7 +790,7 @@ boardRouter.get('/', getAllBoard);
  *               items:
  *                 type: object
  *                 properties:
- *                   _id:
+ *                   id:
  *                     type: string
  *                     description: The board ID.
  *                     example: 60d21b4667d0d8992e610c85
@@ -864,7 +862,7 @@ boardRouter.get('/columns/:id', getAllColumns);
  *               items:
  *                 type: object
  *                 properties:
- *                   _id:
+ *                   id:
  *                     type: string
  *                     description: The column ID.
  *                     example: 60d21b4667d0d8992e610c85
@@ -927,7 +925,7 @@ boardRouter.get('/cards/:id', getAllCard);
  *               items:
  *                 type: object
  *                 properties:
- *                   _id:
+ *                   id:
  *                     type: string
  *                     description: The card ID.
  *                     example: 6669929932fdf8b7cae94f80

@@ -11,32 +11,51 @@ import {
 export const createBoard = asyncHandler(async (req, res, next) => {
   const baard = await createBoardService(req.body, req.user);
 
-  res.status(201).json(baard);
+  const response = {
+    id: baard._id,
+    title: baard.title,
+    icon: baard.icon,
+    background: baard.background,
+    owner: baard.owner,
+  };
+
+  res.status(201).json(response);
 });
 
 export const updateBoard = asyncHandler(async (req, res) => {
-  if (Object.keys(req.body).length === 0) {
-    return res.status(400).json({ error: 'Body must have at least one field' });
-  }
   const { id } = req.params;
   const { _id: owner } = req.user;
 
-  const result = await updateBoardService({ _id: id, owner }, req.body);
+  const baard = await updateBoardService({ _id: id, owner }, req.body);
 
-  if (!result) throw new HttpErrorBoard(404);
+  if (!baard) throw new HttpErrorBoard(404);
 
-  res.status(200).json(result);
+  const response = {
+    id: baard._id,
+    title: baard.title,
+    icon: baard.icon,
+    background: baard.background,
+    owner: baard.owner,
+  };
+  res.status(200).json(response);
 });
 
 export const deleteBoard = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { _id: owner } = req.user;
 
-  const result = await deleteBoardService({ _id: id, owner });
+  const baard = await deleteBoardService({ _id: id, owner });
 
-  if (!result) throw new HttpErrorBoard(404);
+  if (!baard) throw new HttpErrorBoard(404);
+  const response = {
+    id: baard._id,
+    title: baard.title,
+    icon: baard.icon,
+    background: baard.background,
+    owner: baard.owner,
+  };
 
-  res.status(200).json(result);
+  res.status(200).json(response);
 });
 
 export const getAllBoard = asyncHandler(async (req, res) => {
