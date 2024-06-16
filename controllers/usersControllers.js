@@ -122,19 +122,18 @@ export const updateTheme = async (req, res, next) => {
 
 export const updateUser = async (req, res, next) => {
   try {
-    const value = req.body;
+    const { name = req.user.name, email = req.user.email, password } = req.body;
     let passwordHash = null;
-    const user = await User.findOne(req.body._id);
+    const user = await User.findOne({ email });
 
-    if (req.body.email == user.email) throw HttpError(409, 'Email in use');
+    if (user && user._id.toString() !== req.user._id.toString())
+      throw HttpError(409, 'Email in use');
 
-    if (req.body.password) {
-      passwordHash = await bcrypt.hash(req.body.password, 10);
+    if (password) {
+      passwordHash = await bcrypt.hash(password, 10);
     } else {
-      passwordHash = user.password;
+      passwordHash = req.user.password;
     }
-
-    const { email = user.email, name = user.name } = value;
 
     const updatedUser = await User.findByIdAndUpdate(
       req.user._id,

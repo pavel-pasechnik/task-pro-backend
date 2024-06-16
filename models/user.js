@@ -21,6 +21,7 @@ const userSchema = new mongoose.Schema(
     },
     theme: {
       type: String,
+      enum: ['dark', 'light', 'violet'],
       default: 'light',
     },
     token: {

@@ -101,6 +101,10 @@ usersRouter.get('/current', authMiddleware, currentUser);
  *                 type: string
  *                 description: User's password.
  *                 example: password
+ *             required:
+ *               - name
+ *               - email
+ *               - password
  *     responses:
  *       201:
  *         description: User registered successfully.
@@ -169,6 +173,9 @@ usersRouter.post('/register', validateBody(createUserSchema), createUser);
  *                 type: string
  *                 description: User's password.
  *                 example: password
+ *             required:
+ *               - email
+ *               - password
  *     responses:
  *       200:
  *         description: User authenticated successfully.
@@ -228,19 +235,25 @@ usersRouter.post('/login', validateBody(loginUserSchema), loginUser);
  *         application/json:
  *           schema:
  *             type: object
- *             properties:
- *               name:
- *                 type: string
- *                 description: User's name
- *                 example: Test
- *               email:
- *                 type: string
- *                 description: User's email.
- *                 example: test@test.com
- *               password:
- *                 type: string
- *                 description: User's password.
- *                 example: password
+ *             oneOf:
+ *               - required: ["name"]
+ *                 properties:
+ *                   name:
+ *                     type: string
+ *                     description: User's name
+ *                     example: Test
+ *               - required: ["email"]
+ *                 properties:
+ *                   email:
+ *                     type: string
+ *                     description: User's email
+ *                     example: test@test.com
+ *               - required: ["password"]
+ *                 properties:
+ *                   password:
+ *                     type: string
+ *                     description: User's password
+ *                     example: password
  *     responses:
  *       200:
  *         description: User update successfully.
@@ -357,7 +370,14 @@ usersRouter.patch('/avatars', authMiddleware, uploadMiddleware.single('avatar'),
  *             properties:
  *               theme:
  *                 type: string
+ *                 description: Must be one of 'dark', 'light', or 'violet'.
  *                 example: dark
+ *                 enum:
+ *                 - dark
+ *                 - light
+ *                 - violet
+ *             required:
+ *               - theme
  *     responses:
  *       200:
  *         description: Theme updated successfully.
@@ -421,6 +441,9 @@ usersRouter.patch('/themes', authMiddleware, validateBody(updateThemeSchema), up
  *                 type: string
  *                 description: User's need help comment.
  *                 example: I need help with my account.
+ *             required:
+ *               - email
+ *               - comment
  *     responses:
  *       200:
  *         description: Feedback email sent successfully.
@@ -463,7 +486,7 @@ usersRouter.post('/help', authMiddleware, validateBody(needHelpSchema), needHelp
  * /api/users/logout:
  *   post:
  *     summary: Logout current user.
- *     tags: [Users]
+ *     tags: [Auth]
  *     description: Logout from the current user session.
  *     security:
  *     - bearerAuth: []

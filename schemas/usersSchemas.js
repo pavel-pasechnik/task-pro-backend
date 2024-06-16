@@ -18,7 +18,7 @@ export const loginUserSchema = Joi.object({
 });
 
 export const updateThemeSchema = Joi.object({
-  theme: Joi.string().trim().min(1).lowercase().required(),
+  theme: Joi.string().trim().min(1).lowercase().valid('dark', 'light', 'violet').required(),
 });
 
 export const needHelpSchema = Joi.object({
