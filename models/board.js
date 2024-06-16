@@ -24,12 +24,12 @@ const baaardSchema = new mongoose.Schema(
       required: true,
       validate: {
         validator: function (v) {
-          return v.startsWith('url');
+          return v.startsWith('img');
         },
         message: props =>
           `${props.value} is not a valid background path! It should start with 'url'.`,
       },
-      default: 'url-default',
+      default: 'img-default',
     },
     owner: {
       type: Schema.Types.ObjectId,

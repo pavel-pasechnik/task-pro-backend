@@ -60,9 +60,6 @@ export const deleteBoard = asyncHandler(async (req, res) => {
 
 export const getAllBoard = asyncHandler(async (req, res) => {
   const result = await getAllBoardService(req.user);
-  if (!result || result.length === 0) {
-    throw new HttpErrorBoard(404);
-  }
 
   res.status(200).json(result);
 });

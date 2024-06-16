@@ -53,11 +53,11 @@ boardRouter.post('/', validateBody(createBaardSchema), createBoard);
  *               icon:
  *                 type: string
  *                 description: The icon for the board.
- *                 example: default-icon-url
+ *                 example: svg-icon-url
  *               background:
  *                 type: string
  *                 description: The background for the board.
- *                 example: default-background-url
+ *                 example: img-background-url
  *     responses:
  *       201:
  *         description: Board created successfully.
@@ -77,11 +77,11 @@ boardRouter.post('/', validateBody(createBaardSchema), createBoard);
  *                 icon:
  *                   type: string
  *                   description: The icon for the board.
- *                   example: default-icon-url
+ *                   example: svg-icon-url
  *                 background:
  *                   type: string
  *                   description: The background for the board.
- *                   example: default-background-url
+ *                   example: img-background-url
  *                 owner:
  *                   type: string
  *                   description: The ID of the Board to which the board belongs.
@@ -810,17 +810,6 @@ boardRouter.get('/', getAllBoard);
  *                     type: string
  *                     description: The ID of the user who owns the board.
  *                     example: 60d0fe4f5311236168a109ca
- *       404:
- *         description: Board not found.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Error message.
- *                   example: "not found"
  *       401:
  *         description: Unauthorized, token is missing or invalid.
  *         content:
@@ -842,7 +831,7 @@ boardRouter.get('/columns/:id', getAllColumns);
  *   get:
  *     summary: Get all columns for a specific board.
  *     tags: [Columns]
- *     description: Retrieve a list of all columns for a specific board by its ID.
+ *     description: Retrieve a list of all columns for a specific board by its column owner id.
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -874,17 +863,6 @@ boardRouter.get('/columns/:id', getAllColumns);
  *                     type: string
  *                     description: The ID of the board to which the column belongs.
  *                     example: 66699a0b1ddd726fd095a980
- *       404:
- *         description: Column not found.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Error message.
- *                   example: "not found"
  *       401:
  *         description: Unauthorized, token is missing or invalid.
  *         content:
@@ -905,7 +883,7 @@ boardRouter.get('/cards/:id', getAllCard);
  *   get:
  *     summary: Get all cards for a specific column.
  *     tags: [Cards]
- *     description: Retrieve a list of all cards for a specific column by its ID.
+ *     description: Retrieve a list of all cards for a specific column by its card owner id.
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -949,17 +927,6 @@ boardRouter.get('/cards/:id', getAllCard);
  *                     type: string
  *                     description: The ID of the column to which the card belongs.
  *                     example: 66698ddf91397969c068458f
- *       404:
- *         description: Card not found.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Error message.
- *                   example: "not found"
  *       401:
  *         description: Unauthorized, token is missing or invalid.
  *         content:
