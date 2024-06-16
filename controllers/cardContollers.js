@@ -64,8 +64,6 @@ export const deleteCard = asyncHandler(async (req, res, next) => {
 export const getAllCard = asyncHandler(async (req, res, next) => {
   const { id: columnID } = req.params;
   const result = await getAllCardService({ _id: columnID });
-  if (!result || result.length === 0) {
-    throw new HttpErrorBoard(404, 'owner not found');
-  }
+
   res.status(200).json(result);
 });

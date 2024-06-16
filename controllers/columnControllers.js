@@ -55,9 +55,6 @@ export const deleteColumn = asyncHandler(async (req, res, next) => {
 export const getAllColumns = asyncHandler(async (req, res, next) => {
   const { id: baardId } = req.params;
   const result = await getAllColumnService({ _id: baardId });
-  if (!result || result.length === 0) {
-    throw new HttpErrorBoard(404, 'owner not found');
-  }
 
   res.status(200).json(result);
 });
