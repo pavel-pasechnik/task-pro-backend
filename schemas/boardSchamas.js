@@ -29,7 +29,7 @@ export const updateColumnSchema = Joi.object({
 export const createCardSchema = Joi.object({
   title: Joi.string().trim().min(3).required(),
   description: Joi.string().trim().min(3).required(),
-  labelcolor: Joi.string().trim().required(),
+  priority: Joi.string().trim().required(),
   deadline: Joi.number()
     .min(+startDate)
     .max(Date.now() + unixDay)
@@ -39,7 +39,7 @@ export const createCardSchema = Joi.object({
 export const updateCardSchema = Joi.object({
   title: Joi.string().trim().min(3).optional(),
   description: Joi.string().trim().min(3).optional(),
-  labelcolor: Joi.string().trim().optional(),
+  priority: Joi.string().trim().optional(),
   deadline: Joi.number()
     .min(+startDate)
     .max(Date.now() + unixDay)

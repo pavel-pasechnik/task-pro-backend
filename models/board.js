@@ -10,11 +10,26 @@ const baaardSchema = new mongoose.Schema(
     },
     icon: {
       type: String,
-      default: 'default-icon-url',
+      required: true,
+      validate: {
+        validator: function (v) {
+          return v.startsWith('svg');
+        },
+        message: props => `${props.value} is not a valid icon path! It should start with 'svg'.`,
+      },
+      default: 'svg-defautl',
     },
     background: {
       type: String,
-      default: 'default-background-url',
+      required: true,
+      validate: {
+        validator: function (v) {
+          return v.startsWith('url');
+        },
+        message: props =>
+          `${props.value} is not a valid background path! It should start with 'url'.`,
+      },
+      default: 'url-default',
     },
     owner: {
       type: Schema.Types.ObjectId,

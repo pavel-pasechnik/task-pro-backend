@@ -216,10 +216,10 @@ boardRouter.post('/cards/:id', validateBody(createCardSchema), createCard);
  *                 type: string
  *                 description: The description of the card.
  *                 example: This is a new card
- *               labelcolor:
+ *               priority:
  *                 type: string
- *                 description: The label color of the card.
- *                 example: red
+ *                 description: The priority of the card.
+ *                 example: low
  *               deadline:
  *                 type: number
  *                 description: The deadline of the card in Unix time.
@@ -244,10 +244,10 @@ boardRouter.post('/cards/:id', validateBody(createCardSchema), createCard);
  *                   type: string
  *                   description: The description of the card.
  *                   example: This is a new card
- *                 labelcolor:
+ *                 priority:
  *                   type: string
- *                   description: The label color of the card.
- *                   example: red
+ *                   description: The priority of the card.
+ *                   example: low
  *                 deadline:
  *                   type: number
  *                   description: The deadline of the card in Unix time.
@@ -497,10 +497,10 @@ boardRouter.patch('/cards/:id', validateBody(updateCardSchema), updateCard);
  *                 type: string
  *                 description: The new description of the card.
  *                 example: Updated description of the card
- *               labelcolor:
+ *               priority:
  *                 type: string
- *                 description: The new label color of the card.
- *                 example: blue
+ *                 description: The new priority of the card.
+ *                 example: none
  *     responses:
  *       200:
  *         description: Card updated successfully.
@@ -521,10 +521,10 @@ boardRouter.patch('/cards/:id', validateBody(updateCardSchema), updateCard);
  *                   type: string
  *                   description: The description of the card.
  *                   example: Updated description of the card
- *                 labelcolor:
+ *                 priority:
  *                   type: string
- *                   description: The label color of the card.
- *                   example: blue
+ *                   description: The new priority of the card.
+ *                   example: none
  *                 deadline:
  *                   type: number
  *                   description: The deadline of the card in Unix time.
@@ -734,10 +734,10 @@ boardRouter.delete('/cards/:id', deleteCard);
  *                   type: string
  *                   description: The description of the deleted card.
  *                   example: This is a card
- *                 labelcolor:
+ *                 priority:
  *                   type: string
- *                   description: The label color of the deleted card.
- *                   example: red
+ *                   description: The priority of the deleted card.
+ *                   example: none
  *                 deadline:
  *                   type: number
  *                   description: The deadline of the deleted card in Unix time.
