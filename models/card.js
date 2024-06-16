@@ -14,10 +14,11 @@ const cardShema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    labelcolor: {
+    priority: {
       type: String,
-      enum: ['purpel', 'pink', 'green', 'black'],
-      default: 'black',
+      required: true,
+      enum: ['low', 'medium', 'high', 'none'],
+      default: 'none',
     },
     deadline: {
       type: Number,

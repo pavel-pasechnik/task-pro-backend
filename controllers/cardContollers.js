@@ -10,15 +10,15 @@ import {
 
 export const createCard = asyncHandler(async (req, res, next) => {
   const { id: columnID } = req.params;
-  const { title, description, labelcolor, deadline } = req.body;
+  const { title, description, priority, deadline } = req.body;
 
-  const card = await createCardService({ title, description, labelcolor, deadline, columnID });
+  const card = await createCardService({ title, description, priority, deadline, columnID });
 
   const response = {
     id: card._id,
     title: card.title,
     description: card.description,
-    labelcolor: card.labelcolor,
+    priority: card.priority,
     deadline: card.deadline,
     owner: card.owner,
   };
@@ -36,7 +36,7 @@ export const updateCard = asyncHandler(async (req, res, next) => {
     id: card._id,
     title: card.title,
     description: card.description,
-    labelcolor: card.labelcolor,
+    priority: card.priority,
     deadline: card.deadline,
     owner: card.owner,
   };
@@ -53,7 +53,7 @@ export const deleteCard = asyncHandler(async (req, res, next) => {
     id: card._id,
     title: card.title,
     description: card.description,
-    labelcolor: card.labelcolor,
+    priority: card.priority,
     deadline: card.deadline,
     owner: card.owner,
   };
@@ -65,7 +65,7 @@ export const getAllCard = asyncHandler(async (req, res, next) => {
   const { id: columnID } = req.params;
   const result = await getAllCardService({ _id: columnID });
   if (!result || result.length === 0) {
-    throw new HttpErrorBoard(404);
+    throw new HttpErrorBoard(404, 'owner not found');
   }
   res.status(200).json(result);
 });
