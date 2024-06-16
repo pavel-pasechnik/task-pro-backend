@@ -5,6 +5,7 @@ import {
   currentUser,
   loginUser,
   logoutUser,
+  needHelp,
   updateAvatar,
   updateTheme,
   updateUser,
@@ -15,6 +16,7 @@ import uploadMiddleware from '../middleware/upload.js';
 import {
   createUserSchema,
   loginUserSchema,
+  needHelpSchema,
   updateThemeSchema,
   updateUserSchema,
 } from '../schemas/usersSchemas.js';
@@ -99,6 +101,10 @@ usersRouter.get('/current', authMiddleware, currentUser);
  *                 type: string
  *                 description: User's password.
  *                 example: password
+ *             required:
+ *               - name
+ *               - email
+ *               - password
  *     responses:
  *       201:
  *         description: User registered successfully.
@@ -167,6 +173,9 @@ usersRouter.post('/register', validateBody(createUserSchema), createUser);
  *                 type: string
  *                 description: User's password.
  *                 example: password
+ *             required:
+ *               - email
+ *               - password
  *     responses:
  *       200:
  *         description: User authenticated successfully.
@@ -226,19 +235,25 @@ usersRouter.post('/login', validateBody(loginUserSchema), loginUser);
  *         application/json:
  *           schema:
  *             type: object
- *             properties:
- *               name:
- *                 type: string
- *                 description: User's name
- *                 example: Test
- *               email:
- *                 type: string
- *                 description: User's email.
- *                 example: test@test.com
- *               password:
- *                 type: string
- *                 description: User's password.
- *                 example: password
+ *             oneOf:
+ *               - required: ["name"]
+ *                 properties:
+ *                   name:
+ *                     type: string
+ *                     description: User's name
+ *                     example: Test
+ *               - required: ["email"]
+ *                 properties:
+ *                   email:
+ *                     type: string
+ *                     description: User's email
+ *                     example: test@test.com
+ *               - required: ["password"]
+ *                 properties:
+ *                   password:
+ *                     type: string
+ *                     description: User's password
+ *                     example: password
  *     responses:
  *       200:
  *         description: User update successfully.
@@ -280,7 +295,7 @@ usersRouter.patch('/', authMiddleware, validateBody(updateUserSchema), updateUse
 
 /**
  * @swagger
- * /api/users/avatars :
+ * /api/users/avatars:
  *   patch:
  *     summary: Update the current user's avatar.
  *     tags: [Users]
@@ -338,7 +353,7 @@ usersRouter.patch('/avatars', authMiddleware, uploadMiddleware.single('avatar'),
 
 /**
  * @swagger
- * /api/users/themes :
+ * /api/users/themes:
  *   patch:
  *     summary: Update the current user's theme.
  *     tags: [Users]
@@ -355,7 +370,14 @@ usersRouter.patch('/avatars', authMiddleware, uploadMiddleware.single('avatar'),
  *             properties:
  *               theme:
  *                 type: string
+ *                 description: Must be one of 'dark', 'light', or 'violet'.
  *                 example: dark
+ *                 enum:
+ *                 - dark
+ *                 - light
+ *                 - violet
+ *             required:
+ *               - theme
  *     responses:
  *       200:
  *         description: Theme updated successfully.
@@ -396,10 +418,75 @@ usersRouter.patch('/themes', authMiddleware, validateBody(updateThemeSchema), up
 
 /**
  * @swagger
+ * /api/users/help:
+ *   post:
+ *     summary: Send need help email.
+ *     tags: [Users]
+ *     description: Send an email with user message to the support team.
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       description: User need help details.
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: User's email address.
+ *                 example: user@example.com
+ *               comment:
+ *                 type: string
+ *                 description: User's need help comment.
+ *                 example: I need help with my account.
+ *             required:
+ *               - email
+ *               - comment
+ *     responses:
+ *       200:
+ *         description: Feedback email sent successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Success message.
+ *                   example: Email sent successfully.
+ *       400:
+ *         description: Bad request. Invalid input data.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: Invalid input data.
+ *       500:
+ *         description: Server error. Failed to send email.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: Failed to send email.
+ */
+usersRouter.post('/help', authMiddleware, validateBody(needHelpSchema), needHelp);
+
+/**
+ * @swagger
  * /api/users/logout:
  *   post:
  *     summary: Logout current user.
- *     tags: [Users]
+ *     tags: [Auth]
  *     description: Logout from the current user session.
  *     security:
  *     - bearerAuth: []
