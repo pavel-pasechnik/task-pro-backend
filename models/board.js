@@ -13,9 +13,9 @@ const baaardSchema = new mongoose.Schema(
       required: true,
       validate: {
         validator: function (v) {
-          return v.startsWith('svg');
+          return v.endsWith('.svg');
         },
-        message: props => `${props.value} is not a valid icon path! It should start with 'svg'.`,
+        message: props => `${props.value} is not a valid icon path! It should end with 'svg'.`,
       },
       default: 'svg-defautl',
     },
@@ -24,10 +24,10 @@ const baaardSchema = new mongoose.Schema(
       required: true,
       validate: {
         validator: function (v) {
-          return v.startsWith('img');
+          return v.endsWith('.jpg');
         },
         message: props =>
-          `${props.value} is not a valid background path! It should start with 'url'.`,
+          `${props.value} is not a valid background path! It should end with 'jpg'.`,
       },
       default: 'img-default',
     },
