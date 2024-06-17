@@ -17,7 +17,7 @@ const baaardSchema = new mongoose.Schema(
         },
         message: props => `${props.value} is not a valid icon path! It should end with 'svg'.`,
       },
-      default: 'svg-defautl',
+      default: 'svg-defautl.svg',
     },
     background: {
       type: String,
@@ -29,7 +29,7 @@ const baaardSchema = new mongoose.Schema(
         message: props =>
           `${props.value} is not a valid background path! It should end with 'jpg'.`,
       },
-      default: 'img-default',
+      default: '../../assets/jpg/blockWhite.jpg',
     },
     owner: {
       type: Schema.Types.ObjectId,
