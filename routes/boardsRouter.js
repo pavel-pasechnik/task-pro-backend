@@ -219,7 +219,7 @@ boardRouter.post('/cards/:id', validateBody(createCardSchema), createCard);
  *               priority:
  *                 type: string
  *                 description: The priority of the card.
- *                 example: low
+ *                 example: low, medium, high, none
  *               deadline:
  *                 type: number
  *                 description: The deadline of the card in Unix time.
@@ -501,6 +501,10 @@ boardRouter.patch('/cards/:id', validateBody(updateCardSchema), updateCard);
  *                 type: string
  *                 description: The new priority of the card.
  *                 example: none
+ *               deadline:
+ *                 type: number
+ *                 description: The deadline of the card in Unix time.
+ *                 example: 1717351234567
  *     responses:
  *       200:
  *         description: Card updated successfully.
