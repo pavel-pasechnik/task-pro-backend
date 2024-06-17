@@ -53,11 +53,11 @@ boardRouter.post('/', validateBody(createBaardSchema), createBoard);
  *               icon:
  *                 type: string
  *                 description: The icon for the board.
- *                 example: svg-icon-url
+ *                 example: svg-icon-svg
  *               background:
  *                 type: string
  *                 description: The background for the board.
- *                 example: img-background-url
+ *                 example: img-background-jpg
  *     responses:
  *       201:
  *         description: Board created successfully.
@@ -77,11 +77,11 @@ boardRouter.post('/', validateBody(createBaardSchema), createBoard);
  *                 icon:
  *                   type: string
  *                   description: The icon for the board.
- *                   example: svg-icon-url
+ *                   example: svg-icon-svg
  *                 background:
  *                   type: string
  *                   description: The background for the board.
- *                   example: img-background-url
+ *                   example: img-background-jpg
  *                 owner:
  *                   type: string
  *                   description: The ID of the Board to which the board belongs.
@@ -312,11 +312,11 @@ boardRouter.patch('/:id', validateBody(updateBaardSchema), updateBoard);
  *               icon:
  *                 type: string
  *                 description: The new icon for the board.
- *                 example: updated-icon-url
+ *                 example: updated-icon-svg
  *               background:
  *                 type: string
  *                 description: The new background for the board.
- *                 example: updated-background-url
+ *                 example: updated-background-jpg
  *     responses:
  *       200:
  *         description: Board updated successfully.
@@ -604,11 +604,11 @@ boardRouter.delete('/:id', cascadeDeleteColumnsAndCards, deleteBoard);
  *                 icon:
  *                   type: string
  *                   description: The icon of the deleted board.
- *                   example: icon-url
+ *                   example: icon-url-svg
  *                 background:
  *                   type: string
  *                   description: The background of the deleted board.
- *                   example: background-url
+ *                   example: background-jpg
  *                 owner:
  *                   type: string
  *                   description: The ID of the Board to which the board belongs.
