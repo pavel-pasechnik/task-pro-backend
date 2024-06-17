@@ -13,7 +13,7 @@ const baaardSchema = new mongoose.Schema(
       required: true,
       validate: {
         validator: function (v) {
-          return v.endsWith('.svg');
+          return v.endsWith('svg');
         },
         message: props => `${props.value} is not a valid icon path! It should end with 'svg'.`,
       },
@@ -24,7 +24,7 @@ const baaardSchema = new mongoose.Schema(
       required: true,
       validate: {
         validator: function (v) {
-          return v.endsWith('.jpg');
+          return v.endsWith('jpg');
         },
         message: props =>
           `${props.value} is not a valid background path! It should end with 'jpg'.`,
