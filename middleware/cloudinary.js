@@ -20,14 +20,14 @@ export const cloudinaryMiddleware = expressAsyncHandler(
 
       await fs.access(filePath);
 
-      const result = await cloudinary.uploader.upload(filePath, {
+      await cloudinary.uploader.upload(filePath, {
         public_id: id,
       });
 
       await fs.unlink(filePath);
 
       return {
-        url: cloudinary.url(id, {
+        imageUrl: cloudinary.url(id, {
           width: 68,
           height: 68,
           crop: 'fill',
